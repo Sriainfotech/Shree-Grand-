@@ -14,8 +14,8 @@ export const Route = createFileRoute("/experiences/$slug")({
     }
     return {
       meta: pageMeta({
-        title: `${loaderData.experience.title} — Shri Grand Farm Stay`,
-        description: loaderData.experience.summary,
+        title: `${loaderData.experience.name} — Shri Grand Farm Stay`,
+        description: loaderData.experience.tagline,
         path: `/experiences/${params.slug}`,
       }),
       links: canonical(`/experiences/${params.slug}`),
@@ -30,8 +30,8 @@ function ExperiencePage() {
     <div className="section-y pt-40">
       <div className="shell">
         <p className="eyebrow">Experience</p>
-        <h1 className="display-xl mt-5">{experience.title}</h1>
-        <p className="mt-6 max-w-xl text-muted-foreground">{experience.summary}</p>
+        <h1 className="display-xl mt-5">{experience.heroTitle}</h1>
+        <p className="mt-6 max-w-xl text-muted-foreground">{experience.intro}</p>
       </div>
     </div>
   );
