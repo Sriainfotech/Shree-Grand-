@@ -1,6 +1,6 @@
 import { createFileRoute, notFound, Link } from "@tanstack/react-router";
 import { pageMeta, canonical, jsonLd, breadcrumbSchema } from "@/lib/seo";
-import { experiences } from "@/data/experiences";
+import { experiences, type Experience } from "@/data/experiences";
 import { facilities } from "@/data/facilities";
 import { images } from "@/data/images";
 import { PageHero, CtaBand } from "@/components/ui/page";
@@ -41,7 +41,7 @@ export const Route = createFileRoute("/experiences/$slug")({
 });
 
 function ExperiencePage() {
-  const { experience } = Route.useLoaderData();
+  const { experience } = Route.useLoaderData() as { experience: Experience };
   const spaces = experience.spaces
     .map((slug) => facilities.find((f) => f.slug === slug))
     .filter((f): f is NonNullable<typeof f> => Boolean(f));
