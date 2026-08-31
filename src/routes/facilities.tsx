@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import * as Icons from "lucide-react";
 import { pageMeta, canonical } from "@/lib/seo";
-import { images } from "@/data/images";
+import { images, type ImageKey } from "@/data/images";
 import { facilities, type Facility } from "@/data/facilities";
 import { PageHero, CtaBand } from "@/components/ui/page";
 import { SectionHeader, Figure, Chip, PlaceholderNote } from "@/components/ui/section";
@@ -31,6 +31,28 @@ const groups = [
   { id: "convenience", label: "Convenience" },
 ] as const;
 
+/**
+ * Descriptive alt text for the specific reference photo behind each
+ * `ImageKey` used on this page (see `src/data/images.ts`), rather than the
+ * bare facility name.
+ */
+const facilityImageAlt: Partial<Record<ImageKey, string>> = {
+  pool: "Stainless-steel pool ladder curving into a kidney-shaped pool with dark blue tile edging and a thatched-roof cabana behind it",
+  room: "Vaulted-ceiling bedroom with a cream four-poster bed frame, a grey knit throw and geometric pendant lights hung from the posts",
+  lawn: "Adirondack chairs clustered around a small table on a lawn, framed through an arched trellis beneath a blooming frangipani tree",
+  hall: "Long banquet table set with white china and lit taper candles in silver candelabras, framed by gold curtains against exposed brick",
+  dining:
+    "Banquet-style room with a long table of white plates loaded with salads, spring rolls and shot-glass appetizers",
+  bbq: "Open-lid barrel-style charcoal grill smoking with ribs and sausages, with raw meat resting on a wooden board nearby",
+  parking:
+    "Aerial view of a gravel and paved parking lot with several rows of parked cars beside a corrugated-metal building",
+  kidsPlay: "Child looking out from the window of a brightly painted train-shaped play structure",
+  campfire:
+    "Group seated around a stone fire pit at dusk roasting marshmallows, with a string-lit cabin behind them",
+  garden:
+    "Wheelbarrow loaded with young tomato and pepper seedlings beside a raised flowerbed of purple and yellow blooms",
+};
+
 function FacilityIcon({ name }: { name: string }) {
   const Icon = (Icons as unknown as Record<string, Icons.LucideIcon>)[name] ?? Icons.Dot;
   return <Icon className="h-5 w-5 text-accent" aria-hidden />;
@@ -43,7 +65,7 @@ function FacilityCard({ facility, index }: { facility: Facility; index: number }
         {facility.image ? (
           <Figure
             src={images[facility.image]}
-            alt={facility.name}
+            alt={facilityImageAlt[facility.image] ?? facility.name}
             ratio="4/3"
           />
         ) : (
@@ -69,16 +91,24 @@ function FacilityCard({ facility, index }: { facility: Facility; index: number }
         <div className="mt-8 flex flex-wrap items-center gap-6">
           <Link
             to="/gallery"
-            className="border-b border-accent pb-1 text-[0.66rem] font-semibold uppercase tracking-[0.22em]"
+            className="group inline-flex items-center gap-1.5 border-b border-accent pb-1 text-[0.66rem] font-semibold uppercase tracking-[0.22em] transition-colors hover:text-primary hover:border-primary"
           >
             See in gallery
+            <Icons.ArrowRight
+              className="h-3 w-3 transition-transform group-hover:translate-x-1"
+              aria-hidden
+            />
           </Link>
           {facility.hotspot ? (
             <Link
               to="/explore"
-              className="text-[0.66rem] font-semibold uppercase tracking-[0.22em] text-muted-foreground hover:text-primary"
+              className="group inline-flex items-center gap-1.5 text-[0.66rem] font-semibold uppercase tracking-[0.22em] text-muted-foreground transition-colors hover:text-primary"
             >
               View in 3D
+              <Icons.ArrowRight
+                className="h-3 w-3 transition-transform group-hover:translate-x-1"
+                aria-hidden
+              />
             </Link>
           ) : null}
         </div>
@@ -110,8 +140,13 @@ function FacilitiesPage() {
           <SectionHeader
             eyebrow="Facility explorer"
             title="Explore each space"
-            intro="Filter by the part of the property you care about."
+            intro="Filter by the part of the property you care about — stay, outdoor, celebration, dining, recreation or convenience — or leave it on All to see everything at once."
           />
+          <p className="mt-4 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+            Every facility below can be booked on its own or combined — a wedding, for instance,
+            typically uses the lawn, the party hall, the dining area and a few bedrooms together,
+            while a quiet weekend might just need the pool and a room.
+          </p>
           <div className="mt-10 flex flex-wrap gap-2">
             {groups.map((g) => (
               <Chip key={g.id} active={group === g.id} onClick={() => setGroup(g.id)}>

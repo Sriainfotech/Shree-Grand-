@@ -1,4 +1,5 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { Link } from "@tanstack/react-router";
 import { X, Phone, MessageCircle } from "lucide-react";
 import { Logo } from "@/components/brand/Logo";
@@ -24,6 +25,15 @@ const secondary = [
 ];
 
 export function MobileNav({ open, onClose }: { open: boolean; onClose: () => void }) {
+  // Rendered via a portal straight onto <body> (see below) — the header this
+  // component is invoked from has `backdrop-blur-sm`, and any ancestor with
+  // an active filter/backdrop-filter becomes the containing block for
+  // `position: fixed` descendants. Left inline inside <header>, this overlay
+  // was confined to the header's own 80px height instead of the viewport,
+  // which is why the panel looked broken/see-through with squashed content.
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
   useEffect(() => {
     if (typeof document === "undefined") return;
     document.body.style.overflow = open ? "hidden" : "";
@@ -38,10 +48,12 @@ export function MobileNav({ open, onClose }: { open: boolean; onClose: () => voi
     return () => window.removeEventListener("keydown", onKey);
   }, [onClose]);
 
-  return (
+  if (!mounted) return null;
+
+  return createPortal(
     <div
       className={cn(
-        "fixed inset-0 z-50 xl:hidden",
+        "fixed inset-0 z-50 lg:hidden",
         open ? "pointer-events-auto" : "pointer-events-none",
       )}
       aria-hidden={!open}
@@ -98,7 +110,8 @@ export function MobileNav({ open, onClose }: { open: boolean; onClose: () => voi
             {experiences.map((e) => (
               <li key={e.slug}>
                 <Link
-                  to="/experiences/$slug" params={{ slug: e.slug }}
+                  to="/experiences/$slug"
+                  params={{ slug: e.slug }}
                   tabIndex={open ? 0 : -1}
                   className="block py-1.5 text-[0.85rem] text-muted-foreground transition-colors hover:text-primary"
                 >
@@ -156,6 +169,7 @@ export function MobileNav({ open, onClose }: { open: boolean; onClose: () => voi
           </p>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }

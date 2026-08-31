@@ -49,15 +49,15 @@ export const facilities: Facility[] = [
       "Bedrooms for families and groups staying over. Exact configuration is available on request.",
     image: "room",
     group: "stay",
-    hotspot: "rooms",
+    // No separate hotspot — "AC Rooms" already owns the single "rooms"
+    // hotspot in the 3D explorer; two facilities can't both claim it.
   },
   {
     slug: "lawn-area",
     name: "Lawn Area",
     icon: "Trees",
     summary: "Open green for gatherings.",
-    description:
-      "An open lawn used for outdoor gatherings, ceremonies and evening celebrations.",
+    description: "An open lawn used for outdoor gatherings, ceremonies and evening celebrations.",
     image: "lawn",
     group: "outdoor",
     hotspot: "lawn",
@@ -90,7 +90,7 @@ export const facilities: Facility[] = [
     icon: "Flame",
     summary: "Evening grills outdoors.",
     description: "A dedicated barbecue area for outdoor evenings.",
-    image: "dining",
+    image: "bbq",
     group: "dining",
     hotspot: "bbq",
   },
@@ -99,8 +99,8 @@ export const facilities: Facility[] = [
     name: "Parking",
     icon: "CarFront",
     summary: "On-site parking.",
-    description:
-      "On-site parking for guests. Vehicle capacity will be confirmed by the property.",
+    description: "On-site parking for guests. Vehicle capacity will be confirmed by the property.",
+    image: "parking",
     group: "convenience",
     hotspot: "parking",
   },
@@ -110,7 +110,7 @@ export const facilities: Facility[] = [
     icon: "ToyBrick",
     summary: "Space for the little ones.",
     description: "A play area so children have their own space on the property.",
-    image: "garden",
+    image: "kidsPlay",
     group: "recreation",
     hotspot: "play",
   },
@@ -160,8 +160,7 @@ export const facilities: Facility[] = [
   },
 ];
 
-export const facilityBySlug = (slug: string) =>
-  facilities.find((f) => f.slug === slug);
+export const facilityBySlug = (slug: string) => facilities.find((f) => f.slug === slug);
 
 export const featuredFacilitySlugs = [
   "swimming-pool",

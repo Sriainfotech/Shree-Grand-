@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { ImageOff } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { PLACEHOLDER_IMAGE_NOTE } from "@/data/images";
 
@@ -32,23 +34,13 @@ export function SectionHeader({
   as?: "h1" | "h2" | "h3" | undefined;
 }) {
   return (
-    <div
-      className={cn(
-        "max-w-2xl",
-        align === "center" && "mx-auto text-center",
-        className,
-      )}
-    >
+    <div className={cn("max-w-2xl", align === "center" && "mx-auto text-center", className)}>
       {eyebrow ? (
-        <Eyebrow className={cn(align === "center" && "justify-center")}>
-          {eyebrow}
-        </Eyebrow>
+        <Eyebrow className={cn(align === "center" && "justify-center")}>{eyebrow}</Eyebrow>
       ) : null}
       <Heading className="display-xl mt-5 text-balance">{title}</Heading>
       {intro ? (
-        <p className="mt-5 text-[0.98rem] leading-relaxed text-muted-foreground">
-          {intro}
-        </p>
+        <p className="mt-5 text-[0.98rem] leading-relaxed text-muted-foreground">{intro}</p>
       ) : null}
     </div>
   );
@@ -72,18 +64,33 @@ export function Figure({
   priority?: boolean | undefined;
   caption?: string | undefined;
 }) {
+  const [broken, setBroken] = useState(false);
+
   return (
-    <figure className={cn("overflow-hidden bg-secondary", className)} style={{ aspectRatio: ratio }}>
-      <img
-        src={src}
-        alt={alt}
-        loading={priority ? "eager" : "lazy"}
-        decoding="async"
-        className={cn("h-full w-full object-cover img-zoom", imgClassName)}
-      />
-      {caption ? (
-        <figcaption className="sr-only">{caption}</figcaption>
-      ) : null}
+    <figure
+      className={cn("overflow-hidden bg-secondary", className)}
+      style={{ aspectRatio: ratio }}
+    >
+      {broken ? (
+        // Graceful fallback so a broken/missing image source leaves a
+        // labelled placeholder instead of blank layout space.
+        <div className="flex h-full w-full flex-col items-center justify-center gap-2 border border-dashed border-border bg-secondary/60 px-4 text-center">
+          <ImageOff className="h-5 w-5 text-muted-foreground" aria-hidden />
+          <span className="text-[0.65rem] uppercase tracking-[0.14em] text-muted-foreground">
+            Image unavailable
+          </span>
+        </div>
+      ) : (
+        <img
+          src={src}
+          alt={alt}
+          loading={priority ? "eager" : "lazy"}
+          decoding="async"
+          onError={() => setBroken(true)}
+          className={cn("h-full w-full object-cover img-zoom", imgClassName)}
+        />
+      )}
+      {caption ? <figcaption className="sr-only">{caption}</figcaption> : null}
     </figure>
   );
 }
@@ -128,9 +135,7 @@ export function EmptyState({
   return (
     <div className="border border-dashed border-border bg-card px-8 py-16 text-center">
       <h3 className="display-lg">{title}</h3>
-      <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-muted-foreground">
-        {body}
-      </p>
+      <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-muted-foreground">{body}</p>
       {action ? <div className="mt-8 flex justify-center gap-3">{action}</div> : null}
     </div>
   );

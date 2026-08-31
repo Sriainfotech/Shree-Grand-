@@ -23,20 +23,13 @@ export function PropertyScene() {
   const [night, setNight] = useState(false);
 
   const hotspot = hotspots.find((h) => h.id === active) ?? null;
-  const facility = hotspot
-    ? facilities.find((f) => f.slug === hotspot.facilitySlug)
-    : null;
+  const facility = hotspot ? facilities.find((f) => f.slug === hotspot.facilitySlug) : null;
 
   return (
     <div className="grid gap-8 lg:grid-cols-[1.6fr_1fr]">
       <div>
-        <div
-          className={cn(
-            "relative transition-[filter] duration-700",
-            night ? "brightness-[0.72] saturate-[0.85]" : "",
-          )}
-        >
-          <ArchViz label="" />
+        <div className="relative">
+          <ArchViz label="" night={night} />
           <div className="pointer-events-none absolute inset-0">
             <div className="pointer-events-auto absolute inset-0">
               {hotspots.map((h) => (
@@ -97,8 +90,7 @@ export function PropertyScene() {
           <>
             <h3 className="display-lg mt-4">Select a space</h3>
             <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-              Tap any marker on the scene to read about that part of the
-              property.
+              Tap any marker on the scene to read about that part of the property.
             </p>
           </>
         )}

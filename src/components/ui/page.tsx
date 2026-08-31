@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { Eyebrow, Figure } from "@/components/ui/section";
 import { WhatsAppButton, ActionLink } from "@/components/ui/actions";
 import { whatsappMessages } from "@/config/site";
+import { breadcrumbSchema } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
 /** Standard inner-page hero: image band + editorial title block. */
@@ -21,7 +22,7 @@ export function PageHero({
   breadcrumbs?: { label: string; to: string }[] | undefined;
 }) {
   return (
-    <section className="relative isolate flex min-h-[62vh] items-end overflow-hidden bg-ink pt-20">
+    <section className="relative isolate flex h-[62dvh] min-h-[32rem] items-end overflow-hidden bg-ink pt-20">
       <img
         src={image}
         alt={imageAlt}
@@ -32,18 +33,31 @@ export function PageHero({
       <div aria-hidden className="absolute inset-0 -z-10 overlay-scrim" />
       <div className="shell pb-14 pt-28 text-primary-foreground">
         {breadcrumbs?.length ? (
-          <nav aria-label="Breadcrumb" className="mb-6">
-            <ol className="flex flex-wrap items-center gap-2 text-[0.68rem] uppercase tracking-[0.2em] text-primary-foreground/70">
-              {breadcrumbs.map((b, i) => (
-                <li key={b.to} className="flex items-center gap-2">
-                  {i > 0 ? <span aria-hidden>/</span> : null}
-                  <Link to={b.to as never} className="hover:text-accent">
-                    {b.label}
-                  </Link>
-                </li>
-              ))}
-            </ol>
-          </nav>
+          <>
+            <script
+              type="application/ld+json"
+              // eslint-disable-next-line react/no-danger
+              dangerouslySetInnerHTML={{
+                __html: JSON.stringify(
+                  breadcrumbSchema(
+                    breadcrumbs.map((b) => ({ name: b.label, path: b.to })),
+                  ),
+                ),
+              }}
+            />
+            <nav aria-label="Breadcrumb" className="mb-6">
+              <ol className="flex flex-wrap items-center gap-2 text-[0.68rem] uppercase tracking-[0.2em] text-primary-foreground/70">
+                {breadcrumbs.map((b, i) => (
+                  <li key={b.to} className="flex items-center gap-2">
+                    {i > 0 ? <span aria-hidden>/</span> : null}
+                    <Link to={b.to as never} className="hover:text-accent">
+                      {b.label}
+                    </Link>
+                  </li>
+                ))}
+              </ol>
+            </nav>
+          </>
         ) : null}
         <Eyebrow className="text-primary-foreground/70">{eyebrow}</Eyebrow>
         <h1 className="display-hero mt-6 max-w-4xl text-balance">{title}</h1>

@@ -43,10 +43,22 @@ const featuredExperiences = [
 ];
 
 const pillars = [
-  { title: "Stay", body: "Comfortable accommodation." },
-  { title: "Celebrate", body: "Spaces for memorable occasions." },
-  { title: "Escape", body: "Weekend and day-out experiences." },
-  { title: "Connect", body: "Time with family, friends and teams." },
+  {
+    title: "Stay",
+    body: "Air-conditioned rooms for a night, a weekend or longer, on a property you don't have to share with strangers.",
+  },
+  {
+    title: "Celebrate",
+    body: "The lawn, party hall and dining areas adapt to birthdays, weddings, offsites and family functions of any format.",
+  },
+  {
+    title: "Escape",
+    body: "A day trip or a weekend away from the city, with the pool, garden and open sky doing most of the work.",
+  },
+  {
+    title: "Connect",
+    body: "Shared meals, a campfire in the evening and enough open space for a group to actually spend time together.",
+  },
 ];
 
 function HomePage() {
@@ -63,7 +75,7 @@ function HomePage() {
   return (
     <>
       {/* HERO */}
-      <section className="relative isolate flex min-h-[92vh] items-end overflow-hidden bg-ink">
+      <section className="relative isolate flex min-h-dvh items-end overflow-hidden bg-ink">
         <img
           src={images.hero}
           alt="Evening view of a countryside farm stay with lawns and warm lighting"
@@ -114,6 +126,12 @@ function HomePage() {
               Shri Grand Farm Stay is a private property in Vempally,
               Mancherial — open lawns, a swimming pool, an indoor party hall
               and air-conditioned rooms, held together by quiet green space.
+            </p>
+            <p className="mt-5 max-w-md text-[0.95rem] leading-relaxed text-muted-foreground">
+              Whether you're booking a weekend for the family, a milestone
+              birthday, a wedding function or a day away from work with your
+              team, the whole property is yours for the duration — no shared
+              lobbies, no other bookings running alongside yours.
             </p>
             <div className="mt-10">
               <ActionLink to="/about" variant="link">

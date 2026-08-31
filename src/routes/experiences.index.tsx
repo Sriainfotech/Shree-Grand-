@@ -5,7 +5,16 @@ import { experiences } from "@/data/experiences";
 import { PageHero, CtaBand } from "@/components/ui/page";
 import { SectionHeader } from "@/components/ui/section";
 
-export const Route = createFileRoute("/experiences")({
+// Registered as the index route (trailing slash, and this file lives at
+// experiences.index.tsx) rather than a bare "/experiences" file — with both
+// this hub page and experiences.$slug.tsx present, a bare "experiences.tsx"
+// is treated by TanStack Router as a LAYOUT route for everything under
+// /experiences/*, which requires an <Outlet /> to render children. This
+// page has no outlet (it's a complete standalone hub page), so every
+// /experiences/$slug page was silently rendering this hub's own content
+// instead of its own — the index-route form makes /experiences and
+// /experiences/$slug independent sibling routes instead.
+export const Route = createFileRoute("/experiences/")({
   head: () => ({
     meta: pageMeta({
       title: "Experiences — Shri Grand Farm Stay",

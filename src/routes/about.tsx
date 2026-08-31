@@ -4,6 +4,12 @@ import { site } from "@/config/site";
 import { images } from "@/data/images";
 import { PageHero, CtaBand, SplitBlock } from "@/components/ui/page";
 import { SectionHeader, InfoNote } from "@/components/ui/section";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -53,17 +59,26 @@ function AboutPage() {
       />
 
       <section className="section-y">
-        <div className="shell">
-          <SectionHeader
-            eyebrow="Introduction"
-            title="Shri Grand Farm Stay"
-            intro={site.description}
+        <div className="shell grid gap-12 md:grid-cols-[auto_1fr] md:items-center md:gap-16">
+          <img
+            src="/img/logo/logo.png"
+            alt="Shri Grand Farm Stay crest"
+            width={320}
+            height={320}
+            className="mx-auto h-auto w-52 max-w-full md:mx-0 md:w-64"
           />
-          <InfoNote className="mt-8 max-w-2xl">
-            The line above is brand positioning, not a historical claim. Shri
-            Grand Farm Stay's story, milestones and team details will be
-            published here once shared by the property.
-          </InfoNote>
+          <div>
+            <SectionHeader
+              eyebrow="Introduction"
+              title="Shri Grand Farm Stay"
+              intro={site.description}
+            />
+            <InfoNote className="mt-8 max-w-2xl">
+              The line above is brand positioning, not a historical claim. Shri
+              Grand Farm Stay's story, milestones and team details will be
+              published here once shared by the property.
+            </InfoNote>
+          </div>
         </div>
       </section>
 
@@ -109,6 +124,48 @@ function AboutPage() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section className="section-y bg-secondary/50">
+        <div className="shell max-w-3xl">
+          <SectionHeader
+            eyebrow="Good to know"
+            title="Common questions about staying or booking"
+          />
+          <Accordion type="single" collapsible className="mt-10">
+            <AccordionItem value="checkin">
+              <AccordionTrigger>What are the check-in and check-out times?</AccordionTrigger>
+              <AccordionContent>
+                Check-in is at 12:00 PM and check-out is at 10:00 AM. If your plans need a
+                different window, tell us when you enquire and we will see what can be arranged
+                for your dates.
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="advance">
+              <AccordionTrigger>How do I confirm a booking?</AccordionTrigger>
+              <AccordionContent>
+                A 50% advance confirms a booking, payable online or offline. The balance and any
+                remaining details are settled once the stay or event is finalised.
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="group">
+              <AccordionTrigger>Is there a fixed limit on group size?</AccordionTrigger>
+              <AccordionContent>
+                Capacity is based on the party and the spaces you need — there is no fixed
+                published cap. Share your expected group size when you enquire and we will confirm
+                what fits comfortably for your dates.
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="cancel">
+              <AccordionTrigger>What is the cancellation policy?</AccordionTrigger>
+              <AccordionContent>
+                The cancellation policy is confirmed at the time of booking, since it can depend on
+                your dates and how far in advance you are booking. Ask us directly and we will lay
+                it out before you pay any advance.
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
         </div>
       </section>
 

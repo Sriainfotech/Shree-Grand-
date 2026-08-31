@@ -29,6 +29,7 @@ export const navItems: NavItem[] = [
   { label: "Packages", to: "/packages" },
   { label: "Events", to: "/events" },
   { label: "Blog", to: "/blog" },
+  { label: "Contact", to: "/contact" },
 ];
 
 export const footerLinks: NavChild[] = [
@@ -57,7 +58,7 @@ export function NavLink({ to, label }: { to: string; label: string }) {
   return (
     <Link
       to={to as never}
-      className="text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-foreground/80 transition-colors hover:text-primary data-[status=active]:text-primary"
+      className="whitespace-nowrap text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-foreground/80 transition-colors hover:text-primary data-[status=active]:text-primary"
       activeProps={{ className: "text-primary" }}
       activeOptions={{ exact: to === "/" }}
     >

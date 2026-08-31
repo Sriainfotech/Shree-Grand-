@@ -16,7 +16,6 @@ import { Route as BookingRouteImport } from './routes/booking'
 import { Route as CancellationPolicyRouteImport } from './routes/cancellation-policy'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as EventsRouteImport } from './routes/events'
-import { Route as ExperiencesRouteImport } from './routes/experiences'
 import { Route as ExploreRouteImport } from './routes/explore'
 import { Route as FacilitiesRouteImport } from './routes/facilities'
 import { Route as FarmStayRouteImport } from './routes/farm-stay'
@@ -25,6 +24,7 @@ import { Route as PackagesRouteImport } from './routes/packages'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as RoomsRouteImport } from './routes/rooms'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as ExperiencesIndexRouteImport } from './routes/experiences.index'
 import { Route as ExperiencesSlugRouteImport } from './routes/experiences.$slug'
 
 const IndexRoute = IndexRouteImport.update({
@@ -60,11 +60,6 @@ const ContactRoute = ContactRouteImport.update({
 const EventsRoute = EventsRouteImport.update({
   id: '/events',
   path: '/events',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ExperiencesRoute = ExperiencesRouteImport.update({
-  id: '/experiences',
-  path: '/experiences',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ExploreRoute = ExploreRouteImport.update({
@@ -107,10 +102,15 @@ const TermsRoute = TermsRouteImport.update({
   path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ExperiencesIndexRoute = ExperiencesIndexRouteImport.update({
+  id: '/experiences/',
+  path: '/experiences/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ExperiencesSlugRoute = ExperiencesSlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => ExperiencesRoute,
+  id: '/experiences/$slug',
+  path: '/experiences/$slug',
+  getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -121,7 +121,6 @@ export interface FileRoutesByFullPath {
   '/cancellation-policy': typeof CancellationPolicyRoute
   '/contact': typeof ContactRoute
   '/events': typeof EventsRoute
-  '/experiences': typeof ExperiencesRouteWithChildren
   '/explore': typeof ExploreRoute
   '/facilities': typeof FacilitiesRoute
   '/farm-stay': typeof FarmStayRoute
@@ -131,6 +130,7 @@ export interface FileRoutesByFullPath {
   '/rooms': typeof RoomsRoute
   '/terms': typeof TermsRoute
   '/experiences/$slug': typeof ExperiencesSlugRoute
+  '/experiences/': typeof ExperiencesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -140,7 +140,6 @@ export interface FileRoutesByTo {
   '/cancellation-policy': typeof CancellationPolicyRoute
   '/contact': typeof ContactRoute
   '/events': typeof EventsRoute
-  '/experiences': typeof ExperiencesRouteWithChildren
   '/explore': typeof ExploreRoute
   '/facilities': typeof FacilitiesRoute
   '/farm-stay': typeof FarmStayRoute
@@ -150,6 +149,7 @@ export interface FileRoutesByTo {
   '/rooms': typeof RoomsRoute
   '/terms': typeof TermsRoute
   '/experiences/$slug': typeof ExperiencesSlugRoute
+  '/experiences': typeof ExperiencesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -160,7 +160,6 @@ export interface FileRoutesById {
   '/cancellation-policy': typeof CancellationPolicyRoute
   '/contact': typeof ContactRoute
   '/events': typeof EventsRoute
-  '/experiences': typeof ExperiencesRouteWithChildren
   '/explore': typeof ExploreRoute
   '/facilities': typeof FacilitiesRoute
   '/farm-stay': typeof FarmStayRoute
@@ -170,6 +169,7 @@ export interface FileRoutesById {
   '/rooms': typeof RoomsRoute
   '/terms': typeof TermsRoute
   '/experiences/$slug': typeof ExperiencesSlugRoute
+  '/experiences/': typeof ExperiencesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -181,7 +181,6 @@ export interface FileRouteTypes {
     | '/cancellation-policy'
     | '/contact'
     | '/events'
-    | '/experiences'
     | '/explore'
     | '/facilities'
     | '/farm-stay'
@@ -191,6 +190,7 @@ export interface FileRouteTypes {
     | '/rooms'
     | '/terms'
     | '/experiences/$slug'
+    | '/experiences/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -200,7 +200,6 @@ export interface FileRouteTypes {
     | '/cancellation-policy'
     | '/contact'
     | '/events'
-    | '/experiences'
     | '/explore'
     | '/facilities'
     | '/farm-stay'
@@ -210,6 +209,7 @@ export interface FileRouteTypes {
     | '/rooms'
     | '/terms'
     | '/experiences/$slug'
+    | '/experiences'
   id:
     | '__root__'
     | '/'
@@ -219,7 +219,6 @@ export interface FileRouteTypes {
     | '/cancellation-policy'
     | '/contact'
     | '/events'
-    | '/experiences'
     | '/explore'
     | '/facilities'
     | '/farm-stay'
@@ -229,6 +228,7 @@ export interface FileRouteTypes {
     | '/rooms'
     | '/terms'
     | '/experiences/$slug'
+    | '/experiences/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -239,7 +239,6 @@ export interface RootRouteChildren {
   CancellationPolicyRoute: typeof CancellationPolicyRoute
   ContactRoute: typeof ContactRoute
   EventsRoute: typeof EventsRoute
-  ExperiencesRoute: typeof ExperiencesRouteWithChildren
   ExploreRoute: typeof ExploreRoute
   FacilitiesRoute: typeof FacilitiesRoute
   FarmStayRoute: typeof FarmStayRoute
@@ -248,6 +247,8 @@ export interface RootRouteChildren {
   PrivacyRoute: typeof PrivacyRoute
   RoomsRoute: typeof RoomsRoute
   TermsRoute: typeof TermsRoute
+  ExperiencesSlugRoute: typeof ExperiencesSlugRoute
+  ExperiencesIndexRoute: typeof ExperiencesIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -299,13 +300,6 @@ declare module '@tanstack/react-router' {
       path: '/events'
       fullPath: '/events'
       preLoaderRoute: typeof EventsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/experiences': {
-      id: '/experiences'
-      path: '/experiences'
-      fullPath: '/experiences'
-      preLoaderRoute: typeof ExperiencesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/explore': {
@@ -364,27 +358,22 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/experiences/': {
+      id: '/experiences/'
+      path: '/experiences'
+      fullPath: '/experiences/'
+      preLoaderRoute: typeof ExperiencesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/experiences/$slug': {
       id: '/experiences/$slug'
-      path: '/$slug'
+      path: '/experiences/$slug'
       fullPath: '/experiences/$slug'
       preLoaderRoute: typeof ExperiencesSlugRouteImport
-      parentRoute: typeof ExperiencesRoute
+      parentRoute: typeof rootRouteImport
     }
   }
 }
-
-interface ExperiencesRouteChildren {
-  ExperiencesSlugRoute: typeof ExperiencesSlugRoute
-}
-
-const ExperiencesRouteChildren: ExperiencesRouteChildren = {
-  ExperiencesSlugRoute: ExperiencesSlugRoute,
-}
-
-const ExperiencesRouteWithChildren = ExperiencesRoute._addFileChildren(
-  ExperiencesRouteChildren,
-)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -394,7 +383,6 @@ const rootRouteChildren: RootRouteChildren = {
   CancellationPolicyRoute: CancellationPolicyRoute,
   ContactRoute: ContactRoute,
   EventsRoute: EventsRoute,
-  ExperiencesRoute: ExperiencesRouteWithChildren,
   ExploreRoute: ExploreRoute,
   FacilitiesRoute: FacilitiesRoute,
   FarmStayRoute: FarmStayRoute,
@@ -403,7 +391,19 @@ const rootRouteChildren: RootRouteChildren = {
   PrivacyRoute: PrivacyRoute,
   RoomsRoute: RoomsRoute,
   TermsRoute: TermsRoute,
+  ExperiencesSlugRoute: ExperiencesSlugRoute,
+  ExperiencesIndexRoute: ExperiencesIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

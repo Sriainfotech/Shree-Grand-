@@ -1,20 +1,23 @@
 import { Link } from "@tanstack/react-router";
+import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { site, whatsappHref, whatsappMessages } from "@/config/site";
 import { trackWhatsApp } from "@/lib/analytics";
 
 const base =
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap text-[0.72rem] font-semibold uppercase tracking-[0.2em] transition-all duration-300 disabled:pointer-events-none disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2";
+  "group inline-flex items-center justify-center gap-2 whitespace-nowrap text-[0.72rem] font-semibold uppercase tracking-[0.2em] transition-all duration-300 disabled:pointer-events-none disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2";
 
 const variants = {
-  solid:
-    "bg-primary text-primary-foreground hover:bg-forest-deep px-7 py-3.5 rounded-sm",
+  solid: "bg-primary text-primary-foreground hover:bg-forest-deep px-7 py-3.5 rounded-sm",
   gold: "bg-accent text-accent-foreground hover:brightness-105 px-7 py-3.5 rounded-sm",
   outline:
     "border border-current text-foreground hover:bg-primary hover:text-primary-foreground hover:border-primary px-7 py-3.5 rounded-sm",
   ghostLight:
     "border border-primary-foreground/50 text-primary-foreground hover:bg-primary-foreground hover:text-primary px-7 py-3.5 rounded-sm",
-  link: "text-foreground border-b border-accent pb-1 hover:text-primary",
+  // Text link: an arrow (translating on hover/focus) gives it an obvious
+  // affordance beyond the underline, and the hover/focus states go beyond a
+  // subtle color shift (accent underline brightens, text shifts to primary).
+  link: "text-foreground border-b border-accent pb-1 hover:text-primary hover:border-primary focus-visible:text-primary focus-visible:border-primary",
 } as const;
 
 export type ActionVariant = keyof typeof variants;
@@ -33,6 +36,12 @@ export function ActionLink({
   return (
     <Link to={to} className={cn(base, variants[variant], className)}>
       {children}
+      {variant === "link" ? (
+        <ArrowRight
+          className="h-3.5 w-3.5 shrink-0 transition-transform duration-300 group-hover:translate-x-1 group-focus-visible:translate-x-1"
+          aria-hidden
+        />
+      ) : null}
     </Link>
   );
 }

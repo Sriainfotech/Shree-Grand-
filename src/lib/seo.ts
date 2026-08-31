@@ -10,6 +10,15 @@ export type PageSeo = {
   image?: string;
 };
 
+/** Resolves any site-relative path to an absolute URL using `site.url`. */
+export function absoluteUrl(path: string) {
+  if (/^https?:\/\//.test(path)) return path;
+  return `${site.url}${path.startsWith("/") ? path : `/${path}`}`;
+}
+
+/** Default social-share image, used whenever a page doesn't pass its own. */
+const defaultOgImage = absoluteUrl("/img/logo/logo.png");
+
 /** Builds the per-route head() meta array. Titles stay under 60 characters. */
 export function pageMeta({
   title,
@@ -24,20 +33,18 @@ export function pageMeta({
     { property: "og:title", content: title },
     { property: "og:description", content: description },
     { property: "og:type", content: ogType },
-    { property: "og:url", content: path },
+    { property: "og:url", content: absoluteUrl(path) },
     { property: "og:site_name", content: site.name },
     { name: "twitter:card", content: "summary_large_image" },
     { name: "twitter:title", content: title },
     { name: "twitter:description", content: description },
+    { property: "og:image", content: absoluteUrl(image ?? defaultOgImage) },
+    { name: "twitter:image", content: absoluteUrl(image ?? defaultOgImage) },
   ];
-  if (image) {
-    meta.push({ property: "og:image", content: image });
-    meta.push({ name: "twitter:image", content: image });
-  }
   return meta;
 }
 
-export const canonical = (path: string) => [{ rel: "canonical", href: path }];
+export const canonical = (path: string) => [{ rel: "canonical", href: absoluteUrl(path) }];
 
 export function jsonLd(data: unknown) {
   return [{ type: "application/ld+json", children: JSON.stringify(data) }];
@@ -52,9 +59,13 @@ export function lodgingSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "LodgingBusiness",
+    "@id": `${absoluteUrl("/")}#business`,
     name: site.name,
     slogan: site.tagline,
     description: site.description,
+    url: absoluteUrl("/"),
+    image: defaultOgImage,
+    logo: defaultOgImage,
     telephone: `+91${site.contact.phone}`,
     email: site.contact.email,
     address: {
@@ -84,6 +95,16 @@ export function lodgingSchema() {
   };
 }
 
+/** WebSite schema — separate from the business entity, as Google expects. */
+export function websiteSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: site.name,
+    url: absoluteUrl("/"),
+  };
+}
+
 export function breadcrumbSchema(items: { name: string; path: string }[]) {
   return {
     "@context": "https://schema.org",
@@ -92,7 +113,7 @@ export function breadcrumbSchema(items: { name: string; path: string }[]) {
       "@type": "ListItem",
       position: i + 1,
       name: item.name,
-      item: item.path,
+      item: absoluteUrl(item.path),
     })),
   };
 }

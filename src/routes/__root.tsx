@@ -15,7 +15,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { WhatsAppFloat } from "@/components/layout/WhatsAppFloat";
 import { site } from "@/config/site";
-import { lodgingSchema } from "@/lib/seo";
+import { lodgingSchema, websiteSchema } from "@/lib/seo";
 
 function NotFoundComponent() {
   return (
@@ -103,13 +103,35 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Manrope:wght@400;500;600;700&display=swap",
       },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "icon", href: "/img/logo/favicon-192.png", sizes: "192x192", type: "image/png" },
+      { rel: "icon", href: "/img/logo/favicon-512.png", sizes: "512x512", type: "image/png" },
+      { rel: "apple-touch-icon", href: "/img/logo/apple-touch-icon-180.png" },
     ],
     scripts: [
       {
         type: "application/ld+json",
         children: JSON.stringify(lodgingSchema()),
       },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify(websiteSchema()),
+      },
+      // GA4 loader — no-op until `site.analytics.measurementId` is set (see
+      // src/config/site.ts). Nothing loads or tracks until a real ID exists.
+      ...(site.analytics.measurementId
+        ? [
+            {
+              src: `https://www.googletagmanager.com/gtag/js?id=${site.analytics.measurementId}`,
+              async: true,
+            },
+            {
+              children: `window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', '${site.analytics.measurementId}');`,
+            },
+          ]
+        : []),
     ],
   }),
   shellComponent: RootShell,

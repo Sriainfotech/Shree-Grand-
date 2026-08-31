@@ -1,0 +1,494 @@
+/*
+  Project-specific additions on top of the ported legacy stylesheet.
+  Not part of the original template — added during the Next.js port to:
+  1) guarantee no unwanted horizontal ("bottom") scrollbar on any device,
+  2) style the scrollbar itself in the site's own color theme, and
+  3) patch a couple of small absolute-positioning overflow bugs that only
+     show up once the layout actually goes responsive edge-to-edge.
+*/
+
+/* 1) No horizontal scroll anywhere, on any screen size. */
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+img,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+/* 2) Themed scrollbar (site palette: gold #af8a1b / deep charcoal #0b2610). */
+html {
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: #af8a1b #0b2610;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0b2610;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #af8a1b;
+  border-radius: 10px;
+  border: 2px solid #0b2610;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #0b2610;
+}
+
+/* 3) ".services-two .services-icon" is intentionally offset past its own
+   box (right: -30px) to "peek" outside the card on wide desktop layouts.
+   On narrower viewports that same offset pushes it past the page edge. */
+@media (max-width: 991px) {
+  .services-two .services-icon {
+    right: 0;
+  }
+}
+
+/* 4) The "#nav-tab" package/plan tabs have a left/right margin between
+   them (from the legacy CSS), but no vertical gap — fine for the
+   original short single-word labels ("Studio", "Duplex"), but our
+   longer package names ("Full Venue Booking") can still wrap onto a
+   second line on narrower screens. Without this, a wrapped tab sits
+   flush against the row above with no visible gap. */
+#nav-tab.nav-fill {
+  row-gap: 10px;
+}
+
+/* 5) Text-over-photo sections (page headers, testimonials, CTA) were
+   designed around the original template's own dark, moody demo
+   photography — with real, brighter photography now in place, white
+   text can lose contrast against lighter parts of an image. A consistent
+   dark scrim guarantees the overlaid text stays readable regardless of
+   which photo sits behind it.
+
+   Note: ".contact-bg" is deliberately NOT included here — on the
+   standalone /contact page that class is used with no background image
+   at all (plain white section), so a global overlay would incorrectly
+   tint it grey. Where "contact-bg" *does* have a real photo (the two
+   homepages), the overlay is layered directly into that section's own
+   inline background-image instead. */
+.breadcrumb-area,
+.testimonial-area,
+.cta-bg {
+  position: relative;
+}
+
+.breadcrumb-area::before,
+.testimonial-area::before,
+.cta-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(11, 38, 16, 0.55);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.breadcrumb-area > *,
+.testimonial-area > *,
+.cta-bg > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* 6) Contact section redesign: the form previously sat as bare, floating
+   input fields with no visual container, next to a plain dark info panel
+   — flat and disconnected from each other. Giving both columns matching
+   card treatment (rounded corners, shadow, consistent padding) ties them
+   together as one cohesive contact block, and lifts the form off
+   whatever sits behind it (page background or photo). */
+.contact-area .contact-info {
+  border-radius: 12px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+}
+
+.contact-area .contact-form {
+  background: #fff;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+}
+
+@media (max-width: 575px) {
+  .contact-area .contact-form {
+    padding: 25px 20px;
+  }
+}
+
+/* 7) WOW.js (public/js/wow.min.js) sets inline `visibility: hidden` on every
+   ".wow" element until it scrolls into view, then reveals it. In this
+   single-page-app port that reveal doesn't reliably fire for every element
+   (timing against React's render/hydrate cycle, images loading after the
+   initial offset calculation, etc.), so sections were staying invisible —
+   still taking up their normal layout height — which reads as large empty
+   white gaps while scrolling. The elements' entrance animation itself
+   (the fadeInUp/fadeInDown keyframes from animate.css, added via the
+   "animated" class WOW still applies once it does trigger) keeps working;
+   we only stop WOW from being able to hide content indefinitely. */
+.wow {
+  visibility: visible !important;
+}
+
+/* 8) The hero "Starting From" price panel (.slider-price) was pinned with
+   `position: absolute; bottom: 0` against the *entire slide* (830px+ tall),
+   not the row it visually belongs to. On any viewport shorter than the
+   slide, or once slick's own overflow:hidden slide wrapper clips it, the
+   second line of text got cut off. Let it sit in normal flow, vertically
+   centered alongside the headline column instead. */
+.slider-price {
+  position: static;
+  margin-top: 30px;
+}
+
+.slider-price span {
+  display: block;
+  color: #fff;
+  font-size: 14px;
+  opacity: 0.85;
+  margin-top: -10px;
+}
+
+@media (min-width: 992px) {
+  .slider-price {
+    margin-top: 0;
+    text-align: right;
+  }
+}
+
+/* 9) ".contact-area .section-title h2" (the embedded "Get In Touch" heading
+   on the two homepages) sits on a dark photo overlay but, unlike the
+   testimonial section's heading, was never given a light color — it
+   inherited the site's default body text color (a mid-grey), which is
+   close to unreadable against the dark scrim. */
+.contact-area .section-title h2 {
+  color: #fff;
+}
+
+/* 10) The About-Us photo caption ("A Perfect Place for Celebrations") used
+   a fixed-pixel box positioned with a percentage + transform combination
+   that only lined up by accident at one exact image width — on any other
+   size it either overhangs the photo's edge or crowds the text against the
+   frame. Anchor it to a simple, responsive bottom-right corner instead. */
+.second-about {
+  top: auto;
+  left: auto;
+  right: 20px;
+  bottom: 20px;
+  transform: none;
+}
+
+.about-text {
+  width: auto;
+  max-width: 230px;
+  height: auto;
+  padding: 22px 26px;
+  border-radius: 6px;
+  background: var(--color-primary);
+  box-shadow: 5px 5px 0 0 var(--color-emphasis);
+}
+
+.about-text span {
+  top: 0;
+  display: block;
+  line-height: 1.4;
+  color: #fff;
+}
+
+@media (max-width: 480px) {
+  .about-text {
+    max-width: 170px;
+    padding: 16px 18px;
+  }
+
+  .about-text span {
+    font-size: 16px;
+  }
+}
+
+/* 11) The "Why Choose Us" cards used to reserve 20% of their width for a
+   faint decorative star/rating icon (removed as leftover review-template
+   styling that had nothing to do with this content). Let the text fill
+   the full card now that the icon is gone. */
+.services-two .second-services-content {
+  width: 100%;
+  margin-left: 0;
+}
+
+/* =========================================================================
+   DESIGN SYSTEM PASS
+   Everything below assigns explicit roles to color and type instead of the
+   legacy template's habit of reaching for the same 55px/#af8a1b combo for
+   almost every heading, price, and accent. See each numbered note for the
+   specific bug it fixes.
+   ========================================================================= */
+
+:root {
+  /* Color roles — simplified down to the site's two brand colors (was six).
+     primary/accent -> #AF8A1B Primary Gold: the one color that means
+                       "this is an action" — CTA buttons, underlines,
+                       eyebrow labels, active nav, hover states.
+     emphasis/deep   -> #0B2610 Primary Forest Green: everything else that
+                       needs brand color but isn't a call to action —
+                       dark backgrounds (footer, photo overlays), price/
+                       emphasis text, icon badges, card accents.
+     Plain neutrals (white, #252525 ink, #8a8a8a gray, light-gray section
+     backgrounds) are used alongside these two as needed for basic layout
+     — those aren't brand colors, so they don't count against the two. */
+  --color-primary: #af8a1b;
+  --color-accent: #af8a1b;
+  --color-emphasis: #0b2610;
+  --color-ink: #252525;
+  --color-deep: #0b2610;
+
+  /* Type scale ------------------------------------------------------------
+     Fluid clamp()s replace the old set of unrelated fixed pixel values
+     (55px section titles that happened to equal 55px stat numbers, an
+     85px hero heading with no width-aware fallback, etc.) with a single
+     scale that stays in the same proportion at every viewport width. */
+  --fs-h1: clamp(2.25rem, 1.35rem + 3.8vw, 4.25rem); /* hero headline */
+  --fs-h2: clamp(1.75rem, 1.35rem + 1.7vw, 2.75rem); /* section titles */
+  --fs-h3: clamp(1.15rem, 1.05rem + 0.4vw, 1.375rem); /* card titles */
+  --fs-stat: clamp(1.75rem, 1.4rem + 1.4vw, 2.25rem); /* stat numbers — deliberately smaller than --fs-h2 */
+  --fs-small: 0.8125rem; /* eyebrow / label text */
+
+  --section-space-y: 110px;
+  --section-space-y-sm: 60px;
+}
+
+/* 12) Hero headline: 85px with no per-width fallback between the 992–1200px
+   tier and the 1200–1500px tier meant "Celebrations." or "Countryside" on
+   its own line could still be wider than the column, forcing a break after
+   almost every word. A fluid clamp() scales continuously with the viewport
+   instead of jumping between a few fixed breakpoints, so it always fits
+   the column it's actually rendered in. */
+.slider-content h2 {
+  font-size: var(--fs-h1);
+}
+
+/* 13) Section titles ("Interior Views", "What We Do", "Why Choose Us"...)
+   and stat numbers (the "1 / 1 / 6 / 4" counters) were both hard-set to the
+   exact same 55px, so a stat and a real heading carried identical visual
+   weight — the numbers read as competing headlines instead of supporting
+   data. Section titles keep a clear top spot in the scale; stats move down
+   to their own, visibly smaller size. */
+.section-title h2,
+.breadcrumb-title h2 {
+  font-size: var(--fs-h2);
+}
+
+/* ".count" (the 1/1/6/4 stat numbers) only ever appears on the dark,
+   photo-backed counter section — the white + shadow already set on it in
+   style.css is correct there and shouldn't be touched. Only the size
+   changes here, to sit clearly below section titles in the type scale. */
+.count {
+  font-size: var(--fs-stat);
+}
+
+.second-services-content2 h5,
+.second-services-content h5,
+.services-content h4,
+.pricing-head h4 {
+  font-size: var(--fs-h3);
+}
+
+/* 14) Color roles applied: prices move off the CTA gold and onto the new
+   neutral "emphasis" tone, so gold stays a reliable signal for "this is a
+   button" everywhere on the site. ".062a4d" was a leftover dark navy blue
+   from the original real-estate template's price column — a fourth,
+   unrelated hue with no connection to the green/gold/terracotta palette.
+
+   ".slider-price h2" is the one exception: it sits directly on a hero
+   photo with no card behind it, so the dark "emphasis" tone (correct on
+   the white pricing cards and the light choose-area background) became
+   almost unreadable against a busy image. Keep it light there instead,
+   with a strong shadow so it holds up against any photo. */
+.price-count h2,
+.choose-content > h2 {
+  color: var(--color-emphasis);
+}
+
+.slider-price h2 {
+  color: #fff;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.55);
+}
+
+.availability-section .availability-table table tbody .price {
+  color: var(--color-emphasis) !important;
+}
+
+/* 15) The amenity icons inside "Perfect For Every Celebration" / the
+   apartment-details feature list were bare glyphs with no badge,
+   inconsistent with every other icon grouping on the site (stats,
+   services). Giving them the same circular-badge treatment, in the
+   forest green rather than another gold circle, makes them read as
+   intentionally-different supporting icons instead of a missed styling
+   pass — and keeps gold reserved for the real CTA below them. */
+.choose-list ul li i {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  margin-right: 12px;
+  border-radius: 50%;
+  background: var(--color-emphasis);
+  color: #fff;
+  font-size: 14px;
+}
+
+/* 16) Card elevation: service/why-choose-us cards previously had a bare
+   1px border with no shadow or background differentiation, so they read
+   as placeholder boxes rather than designed components. The top edge
+   uses the forest green as a quiet signature accent — visible but not
+   fighting with the gold CTAs on the same page. */
+.single-services,
+.s-single-services {
+  box-shadow: 0 10px 30px rgba(11, 38, 16, 0.08);
+  background: #fff;
+  border-top: 3px solid var(--color-emphasis);
+}
+
+.s-single-services {
+  border-radius: 0 0 6px 6px;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.s-single-services:hover {
+  box-shadow: 0 18px 40px rgba(11, 38, 16, 0.14);
+  transform: translateY(-4px);
+}
+
+.single-counter {
+  padding: 40px 20px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  transition: background 0.3s ease;
+}
+
+.single-counter:hover {
+  background: rgba(175, 138, 27, 0.18); /* --color-primary, gold */
+}
+
+/* 17) Soften the hard edge where a dark, full-bleed section (counters,
+   CTA banner, testimonials) meets a plain white section above it — a
+   thin gradient "fade" reads as an intentional transition instead of a
+   straight color cut. */
+.counter-area,
+.cta-bg,
+.testimonial-area {
+  position: relative;
+}
+
+.counter-area::after,
+.cta-bg::after,
+.testimonial-area::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 60px;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.18), transparent);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* 18) Consistent color grading across property photography: the gallery,
+   service, team, and blog photos come from different shoots/sources with
+   different white balance and saturation. A single subtle filter — warmed
+   slightly and desaturated a touch — pulls them toward one shared look
+   instead of reading as mismatched stock photos side by side. */
+.services-thumb img,
+.gallery-image img,
+.team-thumb img,
+.blog-thumb img,
+.related-post-wrap .post-thumb img,
+.widget__post-thumb img,
+.s-about-img img,
+.apartments-img img {
+  filter: saturate(0.94) contrast(1.03) sepia(0.06);
+}
+
+/* 19) Standardize section rhythm: the legacy markup mixes ad hoc Bootstrap
+   spacer utilities per-section (pt-120/pb-90, pt-113/pb-150, pt-115/pb-185,
+   pt-120/pb-120…) with no consistent logic, so vertical spacing alternates
+   between cramped and overly spacious as you scroll. These selectors win
+   over the inline utility classes (loaded earlier in the stylesheet) and
+   give every major section the same rhythm. */
+.about-area,
+.choose-area,
+.services-area,
+.apartments,
+.pricing-area {
+  padding-top: var(--section-space-y);
+  padding-bottom: var(--section-space-y);
+}
+
+.counter-area,
+.cta-bg,
+.testimonial-area,
+.contact-area,
+.blog-area {
+  padding-top: var(--section-space-y);
+  padding-bottom: calc(var(--section-space-y) * 0.7);
+}
+
+@media (max-width: 767px) {
+  .about-area,
+  .choose-area,
+  .services-area,
+  .apartments,
+  .pricing-area,
+  .counter-area,
+  .cta-bg,
+  .testimonial-area,
+  .contact-area,
+  .blog-area {
+    padding-top: var(--section-space-y-sm);
+    padding-bottom: var(--section-space-y-sm);
+  }
+}
+
+/* 20) Brand motif: the actual "SG" monogram + arc from the real logo
+   (public/logo.jpeg, cropped to public/img/logo/crest-watermark.png)
+   as a faint watermark in the hero corner, away from any real content.
+
+   This used to also run in the footer, positioned top-left — directly
+   behind the actual footer logo and its tagline text, so it just read as
+   a smudge stacked behind the real logo instead of a subtle motif.
+   Removed there; kept only on the hero where it has open sky/plant photo
+   to sit in and nothing else competes with it. */
+.slider-bg {
+  position: relative;
+  overflow: hidden;
+}
+
+.slider-bg::after {
+  content: "";
+  position: absolute;
+  width: 460px;
+  height: 460px;
+  bottom: -160px;
+  right: -120px;
+  background-image: url("/img/logo/crest-watermark.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  opacity: 0.14;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.slider-bg > * {
+  position: relative;
+  z-index: 1;
+}

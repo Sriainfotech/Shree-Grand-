@@ -34,7 +34,7 @@ export function Header() {
       <div className="shell flex h-20 items-center justify-between gap-6">
         <Logo />
 
-        <nav aria-label="Primary" className="hidden items-center gap-7 xl:flex">
+        <nav aria-label="Primary" className="hidden items-center gap-6 lg:flex">
           {navItems.map((item) =>
             item.children ? (
               <div key={item.label} className="group relative">
@@ -79,7 +79,7 @@ export function Header() {
             type="button"
             onClick={() => setOpen(true)}
             aria-label="Open menu"
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-border text-foreground transition-colors hover:border-primary hover:text-primary xl:hidden"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-border text-foreground transition-colors hover:border-primary hover:text-primary lg:hidden"
           >
             <Menu className="h-4 w-4" aria-hidden />
           </button>

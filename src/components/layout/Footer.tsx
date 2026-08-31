@@ -1,6 +1,5 @@
 import { Instagram, Mail, MapPin, Phone } from "lucide-react";
 import { Link } from "@tanstack/react-router";
-import { Logo } from "@/components/brand/Logo";
 import { footerLinks, legalLinks } from "./nav-config";
 import { mailHref, site, telHref, whatsappHref, whatsappMessages } from "@/config/site";
 import { trackPhone, trackWhatsApp } from "@/lib/analytics";
@@ -10,7 +9,15 @@ export function Footer() {
     <footer className="mt-auto border-t border-border bg-forest-deep text-primary-foreground">
       <div className="shell grid gap-14 py-16 md:grid-cols-[1.2fr_1fr_1fr] md:py-20">
         <div>
-          <Logo inverted />
+          <Link to="/" aria-label={`${site.name} — home`} className="inline-block">
+            <img
+              src="/logo.png"
+              alt={`${site.name} crest`}
+              width={280}
+              height={187}
+              className="h-auto w-48 max-w-full"
+            />
+          </Link>
           <p className="mt-6 font-display text-2xl leading-snug text-primary-foreground/90">
             {site.tagline}
           </p>

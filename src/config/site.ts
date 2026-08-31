@@ -15,6 +15,12 @@ export const site = {
   description:
     "A premium farm stay and celebration venue in Vempally, Mancherial, Telangana — for stays, weddings, birthdays, corporate outings and private celebrations.",
 
+  // PLACEHOLDER — no production domain has been decided yet. Every canonical
+  // URL, the sitemap and all schema.org "url" fields are built from this one
+  // constant, so update this single value (and re-run `npm run sitemap`)
+  // before launch instead of hunting for hardcoded URLs across the app.
+  url: "https://www.shrigrandfarmstay.example",
+
   location: {
     // CONFIRMED: village, city, state and landmark only.
     village: "Vempally",

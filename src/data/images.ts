@@ -1,37 +1,35 @@
 /**
  * Central image registry.
  *
- * IMPORTANT: every image below is a generic placeholder visual, NOT a
- * photograph of Shri Grand Farm Stay. When real property photography,
- * drone footage or renders are supplied, replace the imports here only —
- * no component references image files directly.
+ * These are curated stock / reference photographs, NOT confirmed photography
+ * of the actual Shri Grand Farm Stay property. Per the business brief, no
+ * construction photos, drone footage or 3D renders have been supplied yet.
+ * Treat every entry here as representative imagery only — see
+ * `PLACEHOLDER_IMAGE_NOTE` below, shown wherever these are used.
+ *
+ * Files live in `public/images/` and are referenced as plain string paths
+ * (no bundler import needed for anything under `public/`).
  */
-import heroFarmstay from "@/assets/hero-farmstay.jpg";
-import propertyAerial from "@/assets/property-aerial.jpg";
-import facilityPool from "@/assets/facility-pool.jpg";
-import facilityLawn from "@/assets/facility-lawn.jpg";
-import facilityHall from "@/assets/facility-hall.jpg";
-import facilityRoom from "@/assets/facility-room.jpg";
-import facilityDining from "@/assets/facility-dining.jpg";
-import facilityCampfire from "@/assets/facility-campfire.jpg";
-import facilityGarden from "@/assets/facility-garden.jpg";
-import experienceWedding from "@/assets/experience-wedding.jpg";
-import experienceBirthday from "@/assets/experience-birthday.jpg";
-import experienceCorporate from "@/assets/experience-corporate.jpg";
 
 export const images = {
-  hero: heroFarmstay,
-  aerial: propertyAerial,
-  pool: facilityPool,
-  lawn: facilityLawn,
-  hall: facilityHall,
-  room: facilityRoom,
-  dining: facilityDining,
-  campfire: facilityCampfire,
-  garden: facilityGarden,
-  wedding: experienceWedding,
-  birthday: experienceBirthday,
-  corporate: experienceCorporate,
+  // Pool photos are colour-graded (public/images/graded/) to a warmer, more
+  // muted tone — the originals' saturated turquoise clashed with the warm
+  // earthy grading used across the rest of the site's photography.
+  hero: "/images/graded/pool-18.jpg",
+  aerial: "/images/graded/pool-14.jpg",
+  pool: "/images/graded/pool-01.jpg",
+  lawn: "/images/garden-01.jpg",
+  hall: "/images/party-hall-01.jpg",
+  room: "/images/bedroom-05.jpg",
+  dining: "/images/dining-05.jpg",
+  campfire: "/images/campfire-01.jpg",
+  garden: "/images/garden-03.jpg",
+  wedding: "/images/wedding-03.jpg",
+  birthday: "/images/dining-11-birthday.jpg",
+  corporate: "/images/dining-01.jpg",
+  parking: "/images/parking-01.jpg",
+  kidsPlay: "/images/kids-play-01.jpg",
+  bbq: "/images/bbq-01.jpg",
 } as const;
 
 export type ImageKey = keyof typeof images;

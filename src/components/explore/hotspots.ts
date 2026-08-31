@@ -28,10 +28,18 @@ const map: [string, string, number, number][] = [
   ["play", "Children's Play Area", 8, 44],
 ];
 
-export const hotspots: Hotspot[] = map.map(([id, label, x, y]) => ({
-  id,
-  label,
-  facilitySlug:
-    facilities.find((f) => f.hotspot === id)?.slug ?? "swimming-pool",
-  position: { x, y },
-}));
+// Fails loudly in dev instead of silently mismapping: a hotspot whose id
+// doesn't match any facility's `hotspot` field used to fall back to
+// "swimming-pool", so clicking it would silently show the wrong facility.
+export const hotspots: Hotspot[] = map.map(([id, label, x, y]) => {
+  const match = facilities.find((f) => f.hotspot === id);
+  if (import.meta.env.DEV && !match) {
+    console.warn(`[hotspots] "${id}" (${label}) has no matching facility.hotspot`);
+  }
+  return {
+    id,
+    label,
+    facilitySlug: match?.slug ?? id,
+    position: { x, y },
+  };
+});
