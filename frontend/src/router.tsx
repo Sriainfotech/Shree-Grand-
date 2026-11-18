@@ -14,6 +14,5 @@ export const getRouter = () => {
     defaultPendingComponent: () => <FullScreenLoader />,
     defaultPendingMs: 300,
   });
-
   return router;
 };

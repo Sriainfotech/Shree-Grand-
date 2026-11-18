@@ -16,6 +16,7 @@ dist-ssr
 .nitro
 *.local
 
+
 # Env files anywhere in the repo (frontend/, backend/, ...) — *.local above
 # already covers .env.local, this covers plain .env / .env.<name> too.
 .env
