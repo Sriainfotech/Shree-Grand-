@@ -1,0 +1,300 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * SHRI GRAND FARM STAY — design system.
+ * Palette direction (proposed, not confirmed brand colours):
+ *   primary   deep forest green
+ *   background warm ivory
+ *   accent    muted champagne / gold
+ *   ink       deep charcoal-brown
+ * All values are tokens so the business can change them later in one place.
+ */
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 3px);
+  --radius-md: calc(var(--radius) - 1px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 3px);
+  --radius-2xl: calc(var(--radius) + 6px);
+  --radius-3xl: calc(var(--radius) + 10px);
+  --radius-4xl: calc(var(--radius) + 14px);
+
+  --font-display: "Cormorant Garamond", Georgia, serif;
+  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ring-offset-background: var(--background);
+
+  --color-ink: var(--ink);
+  --color-canvas: var(--canvas);
+  --color-sand: var(--sand);
+  --color-gold: var(--gold);
+  --color-gold-soft: var(--gold-soft);
+  --color-forest: var(--forest);
+  --color-forest-deep: var(--forest-deep);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --tracking-widest2: 0.32em;
+}
+
+:root {
+  --radius: 0.25rem;
+
+  --forest: oklch(0.34 0.055 152);
+  --forest-deep: oklch(0.24 0.045 154);
+  --gold: oklch(0.74 0.086 82);
+  --gold-soft: oklch(0.88 0.045 84);
+  --ink: oklch(0.24 0.018 60);
+  --canvas: oklch(0.972 0.012 84);
+  --sand: oklch(0.935 0.018 80);
+
+  --background: var(--canvas);
+  --foreground: var(--ink);
+  --card: oklch(0.99 0.006 84);
+  --card-foreground: var(--ink);
+  --popover: oklch(0.99 0.006 84);
+  --popover-foreground: var(--ink);
+  --primary: var(--forest);
+  --primary-foreground: oklch(0.975 0.012 84);
+  --secondary: var(--sand);
+  --secondary-foreground: var(--forest-deep);
+  --muted: oklch(0.945 0.014 82);
+  --muted-foreground: oklch(0.5 0.02 70);
+  --accent: var(--gold);
+  --accent-foreground: oklch(0.24 0.03 70);
+  --destructive: oklch(0.52 0.16 27);
+  --destructive-foreground: oklch(0.98 0.005 84);
+  --border: oklch(0.885 0.016 82);
+  --input: oklch(0.885 0.016 82);
+  --ring: var(--forest);
+
+  --chart-1: oklch(0.34 0.055 152);
+  --chart-2: oklch(0.74 0.086 82);
+  --chart-3: oklch(0.5 0.05 70);
+  --chart-4: oklch(0.62 0.07 140);
+  --chart-5: oklch(0.42 0.03 60);
+
+  --sidebar: oklch(0.98 0.008 84);
+  --sidebar-foreground: var(--ink);
+  --sidebar-primary: var(--forest);
+  --sidebar-primary-foreground: oklch(0.975 0.012 84);
+  --sidebar-accent: var(--sand);
+  --sidebar-accent-foreground: var(--forest-deep);
+  --sidebar-border: oklch(0.885 0.016 82);
+  --sidebar-ring: var(--forest);
+}
+
+.dark {
+  --background: oklch(0.19 0.015 90);
+  --foreground: oklch(0.95 0.012 84);
+  --card: oklch(0.23 0.018 90);
+  --card-foreground: oklch(0.95 0.012 84);
+  --popover: oklch(0.23 0.018 90);
+  --popover-foreground: oklch(0.95 0.012 84);
+  --primary: oklch(0.7 0.07 150);
+  --primary-foreground: oklch(0.18 0.02 150);
+  --secondary: oklch(0.28 0.02 90);
+  --secondary-foreground: oklch(0.95 0.012 84);
+  --muted: oklch(0.28 0.02 90);
+  --muted-foreground: oklch(0.72 0.02 84);
+  --accent: var(--gold);
+  --accent-foreground: oklch(0.2 0.02 70);
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 16%);
+  --ring: oklch(0.7 0.07 150);
+  --sidebar: oklch(0.23 0.018 90);
+  --sidebar-foreground: oklch(0.95 0.012 84);
+  --sidebar-border: oklch(1 0 0 / 12%);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 3px;
+  }
+
+  ::selection {
+    background: var(--color-gold-soft);
+    color: var(--color-ink);
+  }
+}
+
+/* ---------- utilities ---------- */
+
+@utility eyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--color-muted-foreground);
+}
+
+@utility display-hero {
+  font-family: var(--font-display);
+  font-weight: 300;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  font-size: clamp(2.75rem, 8vw, 6.5rem);
+}
+
+@utility display-xl {
+  font-family: var(--font-display);
+  font-weight: 300;
+  line-height: 1.03;
+  letter-spacing: -0.015em;
+  font-size: clamp(2.15rem, 5vw, 3.9rem);
+}
+
+@utility display-lg {
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 1.1;
+  font-size: clamp(1.75rem, 3.4vw, 2.65rem);
+}
+
+@utility rule-gold {
+  display: block;
+  width: 3.5rem;
+  height: 1px;
+  background: var(--color-gold);
+}
+
+@utility section-y {
+  /* Two adjacent sections each carry this on both edges, so the visible gap
+     between sections is double this value — keep it modest. */
+  padding-block: clamp(3rem, 5.5vw, 5.5rem);
+}
+
+@utility shell {
+  width: 100%;
+  margin-inline: auto;
+  max-width: 84rem;
+  padding-inline: 1.25rem;
+
+  @media (min-width: 768px) {
+    padding-inline: 2.5rem;
+  }
+}
+
+@utility overlay-scrim {
+  background: linear-gradient(
+    to top,
+    color-mix(in oklab, var(--color-ink) 82%, transparent),
+    color-mix(in oklab, var(--color-ink) 26%, transparent) 55%,
+    color-mix(in oklab, var(--color-ink) 8%, transparent)
+  );
+}
+
+@utility reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  animation: sg-reveal 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@utility img-zoom {
+  transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+
+  &:hover {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes sg-reveal {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Shimmer skeleton shown behind an image while it loads, replacing the flat
+   beige placeholder box with a subtle "finished" loading feel. */
+@utility img-shimmer {
+  background: linear-gradient(
+    100deg,
+    color-mix(in oklab, var(--color-secondary) 100%, transparent) 30%,
+    color-mix(in oklab, var(--color-border) 70%, transparent) 50%,
+    color-mix(in oklab, var(--color-secondary) 100%, transparent) 70%
+  );
+  background-size: 200% 100%;
+  animation: sg-shimmer 1.6s ease-in-out infinite;
+}
+
+@keyframes sg-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
