@@ -12,4 +12,8 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
+  // Hosted on Vercel only (no Cloudflare) — pin explicitly since Nitro's
+  // platform auto-detect otherwise falls back to the cloudflare-module
+  // preset, which crashes at runtime on Vercel (missing CF bindings).
+  nitro: { preset: "vercel" },
 });
