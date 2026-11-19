@@ -92,6 +92,7 @@ export const photoCategories: PhotoCategory[] = [
     id: "pool",
     label: "Pool",
     photos: [
+      photo("real-pool.jpg", "The pool and pergola at Shri Grand Farm Stay."),
       photo(
         "graded/pool-01.jpg",
         "Close-up of a stainless-steel pool ladder curving into a kidney-shaped pool with dark blue tile edging and a thatched-roof cabana in the background.",
@@ -248,6 +249,7 @@ export const photoCategories: PhotoCategory[] = [
     id: "dining",
     label: "Dining",
     photos: [
+      photo("real-dining.jpg", "The covered dining area at Shri Grand Farm Stay."),
       photo(
         "dining-01.jpg",
         "An indoor table set with wine glasses and dark green plates on a beige cloth, surrounded by brown upholstered chairs and black metal shelving.",
@@ -364,6 +366,7 @@ export const photoCategories: PhotoCategory[] = [
     id: "campfire",
     label: "Campfire",
     photos: [
+      photo("real-campfire.jpg", "The campfire pit at Shri Grand Farm Stay."),
       photo(
         "campfire-01.jpg",
         "A group in sweaters and beanies sits around a stone fire pit at dusk roasting marshmallows, one strumming a guitar, with a string-lit cabin behind.",
@@ -394,6 +397,7 @@ export const photoCategories: PhotoCategory[] = [
     id: "kidsPlay",
     label: "Children's Play Area",
     photos: [
+      photo("real-kids-play.jpg", "The children's play structure at Shri Grand Farm Stay."),
       photo(
         "kids-play-01.jpg",
         "A boy smiles from the window of a brightly painted train-shaped play structure, with two other children visible in adjacent carriage windows.",
@@ -494,6 +498,7 @@ export const photoCategories: PhotoCategory[] = [
     id: "partyHall",
     label: "Party Hall",
     photos: [
+      photo("real-hall-pergola.jpg", "The covered party pavilion at Shri Grand Farm Stay."),
       photo(
         "party-hall-01.jpg",
         "A long banquet table set with white china, lit taper candles in silver candelabras and small wrapped gifts, framed by gold curtains against exposed brick.",

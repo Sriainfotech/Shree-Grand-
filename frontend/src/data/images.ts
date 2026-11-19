@@ -12,23 +12,25 @@
  */
 
 export const images = {
+  // Real property photos (supplied 2026-11-19). Everything else below is
+  // still the curated stock/reference set — see PLACEHOLDER_IMAGE_NOTE.
+  hero: "/images/real-hero-gate.jpg",
+  pool: "/images/real-pool.jpg",
+  hall: "/images/real-hall-pergola.jpg",
+  dining: "/images/real-dining.jpg",
+  campfire: "/images/real-campfire.jpg",
+  kidsPlay: "/images/real-kids-play.jpg",
   // Pool photos are colour-graded (public/images/graded/) to a warmer, more
   // muted tone — the originals' saturated turquoise clashed with the warm
   // earthy grading used across the rest of the site's photography.
-  hero: "/images/graded/pool-18.jpg",
   aerial: "/images/graded/pool-14.jpg",
-  pool: "/images/graded/pool-01.jpg",
   lawn: "/images/garden-01.jpg",
-  hall: "/images/party-hall-01.jpg",
   room: "/images/bedroom-05.jpg",
-  dining: "/images/dining-05.jpg",
-  campfire: "/images/campfire-01.jpg",
   garden: "/images/garden-03.jpg",
   wedding: "/images/wedding-03.jpg",
   birthday: "/images/dining-11-birthday.jpg",
   corporate: "/images/dining-01.jpg",
   parking: "/images/parking-01.jpg",
-  kidsPlay: "/images/kids-play-01.jpg",
   bbq: "/images/bbq-01.jpg",
 } as const;
 

@@ -5,11 +5,41 @@ import { ActionLink } from "@/components/ui/actions";
 import { cn } from "@/lib/utils";
 
 const spaces = [
-  { key: "pool", label: "Pool", src: images.pool },
-  { key: "lawn", label: "Lawn", src: images.lawn },
-  { key: "rooms", label: "Rooms", src: images.room },
-  { key: "hall", label: "Party Hall", src: images.hall },
-  { key: "garden", label: "Garden", src: images.garden },
+  {
+    key: "pool",
+    label: "Pool",
+    src: images.pool,
+    description:
+      "A full-sized pool framed by a shaded pergola, open from morning till evening. Good for a slow swim before breakfast or a splash-filled afternoon with the whole family. Loungers and changing space are steps away.",
+  },
+  {
+    key: "lawn",
+    label: "Lawn",
+    src: images.lawn,
+    description:
+      "An open stretch of green that doubles as a games lawn, a lounging spot, or overflow seating for a celebration. Big enough for cricket, badminton, or simply laying out a mat under the sky.",
+  },
+  {
+    key: "rooms",
+    label: "Rooms",
+    src: images.room,
+    description:
+      "Comfortable, air-conditioned rooms built for a restful stay after a day outdoors. Each one is designed to be simple, clean and quiet — a proper night's sleep between the pool and the campfire.",
+  },
+  {
+    key: "hall",
+    label: "Party Hall",
+    src: images.hall,
+    description:
+      "A covered, open-sided pavilion built for groups — birthdays, get-togethers and family functions that need shade and space without being boxed indoors. Easily rearranged to suit the occasion.",
+  },
+  {
+    key: "garden",
+    label: "Garden",
+    src: images.garden,
+    description:
+      "Landscaped paths and greenery that make the property feel like a working farm, not just a venue. A quiet place to walk, take photos, or let kids explore away from the main gathering spots.",
+  },
 ] as const;
 
 /** Sticky scroll-linked property strip: one large image pinned on one side
@@ -70,7 +100,7 @@ export function PropertyStripScroll() {
                   itemRefs.current[i] = el;
                 }}
                 data-index={i}
-                className="lg:flex lg:min-h-[6.8rem] lg:items-center"
+                className="lg:flex lg:min-h-[70vh] lg:items-center"
               >
                 <button
                   type="button"
@@ -86,6 +116,9 @@ export function PropertyStripScroll() {
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   <h3 className="display-xl mt-3 transition-colors">{s.label}</h3>
+                  <p className="mt-4 max-w-md text-sm leading-relaxed text-muted-foreground">
+                    {s.description}
+                  </p>
                 </button>
               </li>
             ))}
