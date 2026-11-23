@@ -46,8 +46,8 @@ export const site = {
   },
 
   social: {
-    instagram: "Shreegrandfarmstay", // CONFIRMED (handle)
-    instagramUrl: "https://instagram.com/Shreegrandfarmstay",
+    instagram: "shrigrandfarmstay", // CONFIRMED (handle)
+    instagramUrl: "https://www.instagram.com/shrigrandfarmstay/",
     // PENDING: not supplied by the business.
     facebook: null as string | null,
     youtube: null as string | null,
