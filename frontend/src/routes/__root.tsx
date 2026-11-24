@@ -17,6 +17,7 @@ import { Footer } from "@/components/layout/Footer";
 import { WhatsAppFloat } from "@/components/layout/WhatsAppFloat";
 import { site } from "@/config/site";
 import { lodgingSchema, websiteSchema } from "@/lib/seo";
+import { track } from "@/lib/analytics";
 
 function NotFoundComponent() {
   return (
@@ -132,6 +133,21 @@ gtag('config', '${site.analytics.measurementId}');`,
             },
           ]
         : []),
+      // Google Tag Manager — container ID supplied by the business's digital
+      // marketing team (see src/config/site.ts). No-op if ever unset.
+      ...(site.analytics.gtmId
+        ? [
+            {
+              src: `https://www.googletagmanager.com/gtm.js?id=${site.analytics.gtmId}`,
+              async: true,
+            },
+            {
+              children: `window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());`,
+            },
+          ]
+        : []),
     ],
   }),
   shellComponent: RootShell,
@@ -164,6 +180,15 @@ function RootComponent() {
   const isAdminRoute = useRouterState({
     select: (s) => s.location.pathname.startsWith("/admin"),
   });
+
+  // GTM/GA4 only see the initial document load from the <script> tags in
+  // head() — client-side route changes (TanStack Router's <Link> navigation)
+  // never reload them. Push a page_view to the dataLayer on every route
+  // change so every single page is tracked, not just the first one loaded.
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  useEffect(() => {
+    track("page_view", { page_path: pathname });
+  }, [pathname]);
 
   return (
     <QueryClientProvider client={queryClient}>

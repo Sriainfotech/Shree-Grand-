@@ -74,6 +74,9 @@ export const site = {
   analytics: {
     // PENDING: GA4 measurement ID. Events are collected and no-op until set.
     measurementId: null as string | null,
+    // Google Tag Manager container ID, supplied by the business's digital
+    // marketing team.
+    gtmId: "GTM-MD3WJN77" as string | null,
   },
 } as const;
 
