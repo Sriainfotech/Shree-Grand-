@@ -48,7 +48,10 @@ const newQuestions = [
   },
 ];
 
-const items = [...faqItems, ...newQuestions];
+// Exported so index.tsx's head() can build FAQPage schema from the exact
+// same list this component renders — keep them in sync.
+export const homeFaqItems = [...faqItems, ...newQuestions];
+const items = homeFaqItems;
 
 export function FaqPreview() {
   return (

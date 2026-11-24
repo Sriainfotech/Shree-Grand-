@@ -1,12 +1,13 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { MapPin } from "lucide-react";
-import { pageMeta, canonical, jsonLd, lodgingSchema } from "@/lib/seo";
+import { pageMeta, canonical, jsonLd, lodgingSchema, faqSchema } from "@/lib/seo";
 import { site, PRICE_ON_REQUEST } from "@/config/site";
 import { images } from "@/data/images";
 import { experienceCategories } from "@/data/experience-categories";
 import { facilities, featuredFacilitySlugs } from "@/data/facilities";
 import { galleryItems } from "@/data/gallery";
 import { packageCategories } from "@/data/packages";
+import { homeFaqItems } from "@/components/home/FaqPreview";
 import { ActionLink, ActionAnchor } from "@/components/ui/actions";
 import { Eyebrow, Figure, SectionHeader, PlaceholderNote } from "@/components/ui/section";
 import { CtaBand } from "@/components/ui/page";
@@ -27,7 +28,7 @@ export const Route = createFileRoute("/")({
       path: "/",
     }),
     links: canonical("/"),
-    scripts: jsonLd(lodgingSchema()),
+    scripts: [...jsonLd(lodgingSchema()), ...jsonLd(faqSchema(homeFaqItems))],
   }),
   component: HomePage,
 });
