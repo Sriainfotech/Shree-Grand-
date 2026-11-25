@@ -12,20 +12,21 @@
  */
 
 export const images = {
-  // Real property photos (supplied 2026-11-19). Everything else below is
-  // still the curated stock/reference set — see PLACEHOLDER_IMAGE_NOTE.
+  // Real property photos (supplied 2026-11-19 and 2026-11-25). Everything
+  // else below is still the curated stock/reference set — see
+  // PLACEHOLDER_IMAGE_NOTE.
   hero: "/images/real-hero-gate.jpg",
   pool: "/images/real-pool.jpg",
   hall: "/images/real-hall-pergola.jpg",
   dining: "/images/real-dining.jpg",
   campfire: "/images/real-campfire.jpg",
   kidsPlay: "/images/real-kids-play.jpg",
+  room: "/images/real-bedroom-01.jpg",
   // Pool photos are colour-graded (public/images/graded/) to a warmer, more
   // muted tone — the originals' saturated turquoise clashed with the warm
   // earthy grading used across the rest of the site's photography.
   aerial: "/images/graded/pool-14.jpg",
   lawn: "/images/garden-01.jpg",
-  room: "/images/bedroom-05.jpg",
   garden: "/images/garden-03.jpg",
   wedding: "/images/wedding-03.jpg",
   birthday: "/images/dining-11-birthday.jpg",

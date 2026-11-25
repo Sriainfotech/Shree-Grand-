@@ -93,6 +93,7 @@ export const photoCategories: PhotoCategory[] = [
     label: "Pool",
     photos: [
       photo("real-pool.jpg", "The pool and pergola at Shri Grand Farm Stay."),
+      photo("real-pool-02.jpg", "A frontal view of the pool and guest rooms at Shri Grand Farm Stay."),
       photo(
         "graded/pool-01.jpg",
         "Close-up of a stainless-steel pool ladder curving into a kidney-shaped pool with dark blue tile edging and a thatched-roof cabana in the background.",
@@ -187,6 +188,8 @@ export const photoCategories: PhotoCategory[] = [
     id: "bedroom",
     label: "Rooms",
     photos: [
+      photo("real-bedroom-01.jpg", "An AC bedroom at Shri Grand Farm Stay with a tropical palm-print accent wall."),
+      photo("real-bedroom-02.jpg", "An AC bedroom at Shri Grand Farm Stay with a botanical mural accent wall."),
       photo(
         "bedroom-01.jpg",
         "A loft-style bedroom with a dark wood dresser, a triangular mirror, a guitar mounted on the wall, and a bed with a dark photo-print duvet under mustard curtains.",
@@ -250,6 +253,7 @@ export const photoCategories: PhotoCategory[] = [
     label: "Dining",
     photos: [
       photo("real-dining.jpg", "The covered dining area at Shri Grand Farm Stay."),
+      photo("real-dining-02.jpg", "Seating in the covered dining and kitchen area at Shri Grand Farm Stay."),
       photo(
         "dining-01.jpg",
         "An indoor table set with wine glasses and dark green plates on a beige cloth, surrounded by brown upholstered chairs and black metal shelving.",

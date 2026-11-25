@@ -51,7 +51,7 @@ export function MobileNav({ open, onClose }: { open: boolean; onClose: () => voi
   return createPortal(
     <div
       className={cn(
-        "fixed inset-0 z-50 lg:hidden",
+        "fixed inset-0 z-50 overflow-hidden lg:hidden",
         open ? "pointer-events-auto" : "pointer-events-none",
       )}
       aria-hidden={!open}
