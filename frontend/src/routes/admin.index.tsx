@@ -6,9 +6,11 @@ import {
   listInquiries,
   updateBookingStatus,
   updateInquiryStatus,
+  verifyBookingPayment,
   type AdminBooking,
   type AdminInquiry,
 } from "@/lib/adminApi";
+import { ApiRequestError } from "@/config/api";
 import { AdminShell } from "@/components/admin/AdminShell";
 import { useAdminGuard } from "@/components/admin/useAdminGuard";
 import { FullScreenLoader, LogoSpinner } from "@/components/ui/LogoSpinner";
@@ -51,6 +53,7 @@ const BADGE_STYLES: Record<string, string> = {
   contacted: "bg-primary/10 text-primary border-primary/30",
   closed: "bg-muted text-muted-foreground border-border",
   unpaid: "bg-muted text-muted-foreground border-border",
+  pending_verification: "bg-accent/15 text-accent-foreground border-accent/40",
   advance_paid: "bg-accent/15 text-accent-foreground border-accent/40",
   paid: "bg-primary/10 text-primary border-primary/30",
   refunded: "bg-destructive/10 text-destructive border-destructive/30",
@@ -123,6 +126,7 @@ function AdminDashboardPage() {
   const [inquiries, setInquiries] = useState<AdminInquiry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [verifyingId, setVerifyingId] = useState<string | null>(null);
 
   const loadData = useCallback(async () => {
     setLoading(true);
@@ -145,6 +149,22 @@ function AdminDashboardPage() {
   async function handleBookingStatus(id: string, status: AdminBooking["status"]) {
     const updated = await updateBookingStatus(id, status);
     setBookings((prev) => prev.map((b) => (b.id === id ? updated : b)));
+  }
+
+  // Same action a "Verify payment" button in the admin notification email
+  // performs with a no-login signed link (see backend payment.controller.js)
+  // — this is just the logged-in-admin-panel path to it.
+  async function handleVerifyPayment(id: string) {
+    setVerifyingId(id);
+    setError(null);
+    try {
+      const updated = await verifyBookingPayment(id);
+      setBookings((prev) => prev.map((b) => (b.id === id ? updated : b)));
+    } catch (err) {
+      setError(err instanceof ApiRequestError ? err.message : "Couldn't verify this payment.");
+    } finally {
+      setVerifyingId(null);
+    }
   }
 
   async function handleInquiryStatus(id: string, status: AdminInquiry["status"]) {
@@ -215,7 +235,19 @@ function AdminDashboardPage() {
                       <td className="p-3">{b.guests}</td>
                       <td className="p-3">{b.occasion ?? "-"}</td>
                       <td className="p-3">
-                        <Badge value={b.paymentStatus} />
+                        <div className="flex items-center gap-2">
+                          <Badge value={b.paymentStatus} />
+                          {b.paymentStatus === "pending_verification" ? (
+                            <button
+                              type="button"
+                              disabled={verifyingId === b.id}
+                              onClick={() => void handleVerifyPayment(b.id)}
+                              className="rounded-md border border-primary px-2 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.08em] text-primary transition-colors hover:bg-primary/10 disabled:cursor-not-allowed disabled:opacity-60"
+                            >
+                              {verifyingId === b.id ? "Verifying..." : "Verify"}
+                            </button>
+                          ) : null}
+                        </div>
                       </td>
                       <td className="p-3">{formatDate(b.createdAt)}</td>
                       <td className="p-3">

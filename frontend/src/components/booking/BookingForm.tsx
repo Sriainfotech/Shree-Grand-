@@ -272,7 +272,7 @@ export function BookingForm() {
       <div className="border border-border bg-card p-8 text-center sm:p-10">
         <CheckCircle2 className="mx-auto h-8 w-8 text-primary" aria-hidden />
         <h3 className="display-lg mt-4">
-          {paymentDone ? "Payment received — booking confirmed!" : "Your booking request is in."}
+          {paymentDone ? "Payment received — verifying now." : "Your booking request is in."}
         </h3>
         <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-muted-foreground">
           We've received your request for{" "}
@@ -285,7 +285,7 @@ export function BookingForm() {
           </strong>
           .{" "}
           {paymentDone
-            ? "We'll see you then!"
+            ? "We're verifying your payment now — you'll get an email as soon as it's confirmed, usually within a few hours."
             : "We'll confirm availability and next steps on the phone number you shared, usually within a few hours."}
         </p>
         <button

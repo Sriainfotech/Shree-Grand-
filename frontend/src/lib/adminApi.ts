@@ -103,6 +103,14 @@ export function updateBookingStatus(id: string, status: AdminBooking["status"]) 
   });
 }
 
+/** Confirms a payment that's sitting in `pending_verification` — marks the
+ * booking paid/confirmed and emails the guest the final confirmation. The
+ * same action is also reachable, no-login, from the "Verify payment" button
+ * in the admin's notification email (see backend payment.controller.js). */
+export function verifyBookingPayment(id: string) {
+  return authFetch<AdminBooking>(`/api/bookings/${id}/verify-payment`, { method: "PATCH" });
+}
+
 export type AdminInquiry = {
   id: string;
   name: string;

@@ -22,5 +22,11 @@ router.patch(
   validate,
   bookingController.updateStatus,
 );
+router.patch(
+  "/:id/verify-payment",
+  protect,
+  authorize("admin", "editor"),
+  bookingController.verifyPayment,
+);
 
 module.exports = router;

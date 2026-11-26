@@ -1,5 +1,6 @@
 const bookingService = require("../services/booking.service");
 const availabilityService = require("../services/availability.service");
+const paymentService = require("../services/payment.service");
 const asyncHandler = require("../utils/asyncHandler");
 const { success } = require("../utils/response");
 const ApiError = require("../utils/apiError");
@@ -44,4 +45,14 @@ const updateStatus = asyncHandler(async (req, res) => {
   return success(res, { message: "Booking status updated", data: booking });
 });
 
-module.exports = { checkAvailability, create, list, getById, updateStatus };
+const verifyPayment = asyncHandler(async (req, res) => {
+  const { booking, alreadyVerified } = await paymentService.verifyBookingPayment(req.params.id, {
+    verifiedBy: "admin_panel",
+  });
+  return success(res, {
+    message: alreadyVerified ? "Payment was already verified" : "Payment verified — guest notified",
+    data: booking,
+  });
+});
+
+module.exports = { checkAvailability, create, list, getById, updateStatus, verifyPayment };

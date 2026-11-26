@@ -71,7 +71,13 @@ model Booking {
   totalAmount   Float?
   advanceAmount Float?
   paymentType   String? // advance | full — chosen by the guest at checkout
-  paymentStatus String  @default("unpaid") // unpaid | advance_paid | paid | refunded
+  // unpaid | pending_verification | advance_paid | paid | refunded
+  // Razorpay's signature check moves unpaid -> pending_verification (the
+  // gateway confirmed the charge, but a human hasn't double-checked it yet);
+  // an admin's explicit verification moves pending_verification -> paid/advance_paid.
+  paymentStatus String  @default("unpaid")
+  paymentVerifiedAt DateTime? // when an admin verified the payment (set alongside paid/advance_paid)
+  paymentVerifiedBy String? // "admin_panel" | "email_link" — how it was verified, for the audit trail
   source        String  @default("website") // website | whatsapp | phone | walk_in
 
   payments Payment[]

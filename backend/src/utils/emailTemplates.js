@@ -123,6 +123,25 @@ function paragraph(text) {
   return `<p style="margin:0 0 14px;font-size:14px;line-height:1.6;color:${BRAND.colors.ink};">${text}</p>`;
 }
 
+/** A branded CTA button — used for the admin's one-click "Verify payment"
+ * link. Table-based so it renders consistently in Outlook, which ignores
+ * <button>/<a> padding and border-radius applied via plain CSS. */
+function ctaButton(label, url) {
+  const { colors } = BRAND;
+  return `
+    <table role="presentation" cellpadding="0" cellspacing="0" style="margin:22px 0;">
+      <tr>
+        <td style="border-radius:6px;background:${colors.forest};">
+          <a href="${esc(url)}" target="_blank" rel="noopener"
+             style="display:inline-block;padding:13px 28px;font-size:13px;font-weight:700;
+                    letter-spacing:0.04em;color:#ffffff;text-decoration:none;border-radius:6px;">
+            ${esc(label)}
+          </a>
+        </td>
+      </tr>
+    </table>`;
+}
+
 // ---------------------------------------------------------------------------
 // Booking emails
 // ---------------------------------------------------------------------------
@@ -210,26 +229,88 @@ function inquiryConfirmationEmailHtml(inquiry) {
 }
 
 // ---------------------------------------------------------------------------
-// Payment confirmation email
+// Payment emails
+//
+// Flow: Razorpay signature check succeeds -> guest gets
+// paymentPendingVerificationEmailHtml + admin gets
+// paymentVerificationAdminEmailHtml (with a one-click verify link) -> admin
+// verifies (admin panel button, or the email's link) -> guest gets
+// paymentVerifiedEmailHtml.
 // ---------------------------------------------------------------------------
 
-function paymentConfirmationEmailHtml(booking, payment, amountInRupees) {
+/** Sent to the guest the moment Razorpay's checkout signature checks out.
+ * Deliberately stops short of "confirmed" — a human still has to verify the
+ * payment before the booking is final. */
+function paymentPendingVerificationEmailHtml(booking, amountInRupees) {
   const bodyHtml =
     paragraph(`Hi ${esc(booking.name)},`) +
     paragraph(
-      `We've received your payment — your booking is now <strong>confirmed</strong>. Here's a summary for your records.`,
+      `We've received your payment. We're just verifying it on our end — you'll get another email as soon as that's done and your booking is confirmed. This usually doesn't take long.`,
     ) +
     fieldsTable({
       "Check-in": booking.checkIn.toDateString(),
       "Check-out": booking.checkOut ? booking.checkOut.toDateString() : null,
       "Amount paid": `₹${amountInRupees.toLocaleString("en-IN")}`,
       "Payment type": booking.paymentType === "full" ? "Full payment" : "Advance payment",
+    }) +
+    paragraph(`Thanks for your patience — we'll be in touch shortly.`);
+  return wrapEmail({
+    heading: "Payment received — verifying now",
+    preheader: "We've received your payment and are verifying it now.",
+    bodyHtml,
+  });
+}
+
+/** Sent to the business inbox alongside the guest's "pending verification"
+ * email — the `verifyUrl` is a signed, no-login link (see
+ * utils/actionToken.js) that confirms the payment the moment it's clicked,
+ * so the admin can act straight from their phone's mail app. */
+function paymentVerificationAdminEmailHtml(booking, payment, amountInRupees, verifyUrl) {
+  const bodyHtml =
+    paragraph(
+      `A payment came in through Razorpay and passed signature verification. Please confirm it actually shows up in the Razorpay dashboard, then click below to confirm the booking and notify the guest.`,
+    ) +
+    fieldsTable({
+      Guest: booking.name,
+      Phone: booking.phone,
+      Email: booking.email,
+      "Check-in": booking.checkIn.toDateString(),
+      "Check-out": booking.checkOut ? booking.checkOut.toDateString() : null,
+      "Amount paid": `₹${amountInRupees.toLocaleString("en-IN")}`,
+      "Payment type": booking.paymentType === "full" ? "Full payment" : "Advance payment",
       "Payment ID": payment.gatewayPaymentId,
+    }) +
+    ctaButton("Verify payment & confirm booking", verifyUrl) +
+    paragraph(
+      `If this link has already been used (or you'd rather verify from the admin panel), opening it again is harmless — it won't send a duplicate confirmation to the guest.`,
+    );
+  return wrapEmail({
+    heading: "Payment awaiting verification",
+    preheader: `${booking.name} paid ₹${amountInRupees.toLocaleString("en-IN")} — verify to confirm the booking.`,
+    bodyHtml,
+  });
+}
+
+/** Sent to the guest once an admin has verified the payment (via the admin
+ * panel button or the email's one-click link) — this is the final
+ * "you're confirmed" email. */
+function paymentVerifiedEmailHtml(booking, payment, amountInRupees) {
+  const bodyHtml =
+    paragraph(`Hi ${esc(booking.name)},`) +
+    paragraph(
+      `Your payment is verified and your booking is now <strong>confirmed</strong>. Here's a summary for your records.`,
+    ) +
+    fieldsTable({
+      "Check-in": booking.checkIn.toDateString(),
+      "Check-out": booking.checkOut ? booking.checkOut.toDateString() : null,
+      "Amount paid": `₹${amountInRupees.toLocaleString("en-IN")}`,
+      "Payment type": booking.paymentType === "full" ? "Full payment" : "Advance payment",
+      "Payment ID": payment?.gatewayPaymentId,
     }) +
     paragraph(`We look forward to hosting you.`);
   return wrapEmail({
-    heading: "Payment received — booking confirmed",
-    preheader: "Your payment was received and your booking is confirmed.",
+    heading: "Payment verified — booking confirmed",
+    preheader: "Your payment is verified and your booking is confirmed.",
     bodyHtml,
   });
 }
@@ -240,9 +321,12 @@ module.exports = {
   wrapEmail,
   fieldsTable,
   paragraph,
+  ctaButton,
   bookingAdminEmailHtml,
   bookingConfirmationEmailHtml,
   inquiryAdminEmailHtml,
   inquiryConfirmationEmailHtml,
-  paymentConfirmationEmailHtml,
+  paymentPendingVerificationEmailHtml,
+  paymentVerificationAdminEmailHtml,
+  paymentVerifiedEmailHtml,
 };

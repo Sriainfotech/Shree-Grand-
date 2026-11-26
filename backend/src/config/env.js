@@ -39,6 +39,12 @@ const env = {
 
   clientOrigin: process.env.CLIENT_ORIGIN || "http://localhost:3000",
 
+  // This server's own publicly-reachable base URL — needed to build the
+  // one-click "Verify payment" link sent in the admin notification email
+  // (that link is a GET to this API, opened straight from the inbox, not a
+  // frontend route). Falls back to localhost for local development.
+  apiBaseUrl: process.env.API_BASE_URL || `http://localhost:${process.env.PORT || 5000}`,
+
   // Razorpay is the most common gateway for Indian businesses. Payment
   // routes stay disabled (return 503) until both of these are set — see
   // src/services/payment.service.js.
