@@ -27,6 +27,7 @@ import {
 import { getProperty } from "@/lib/propertyApi";
 import { ApiRequestError } from "@/config/api";
 import { site } from "@/config/site";
+import { track } from "@/lib/analytics";
 
 const emptyForm: BookingRequestInput = {
   name: "",
@@ -136,6 +137,7 @@ export function BookingForm() {
       };
       const result = await submitBookingRequest(payload);
       setConfirmed({ checkIn: result.checkIn });
+      track("booking_request_submitted");
 
       if (result.totalAmount) {
         const { configured } = await getPaymentStatus().catch(() => ({ configured: false }));
@@ -190,6 +192,12 @@ export function BookingForm() {
           try {
             await verifyPayment(response);
             setPaymentDone(true);
+            // No PII here — just the amount/type, which the backend already
+            // computed server-side (never trust the client's own number).
+            track("payment_received_pending_verification", {
+              payment_amount: order.amount / 100,
+              payment_type: paymentType,
+            });
           } catch {
             setFormError(
               "We couldn't confirm your payment automatically. If money was deducted, contact us with your booking details.",

@@ -158,7 +158,10 @@ async function verifyBookingPayment(bookingId, { verifiedBy }) {
   if (!booking) throw ApiError.notFound("Booking not found");
 
   if (booking.paymentStatus === "paid" || booking.paymentStatus === "advance_paid") {
-    return { booking, alreadyVerified: true };
+    // Already confirmed by an earlier call (admin panel or email link,
+    // whichever got there first) — alreadyVerified:true tells the caller
+    // not to fire the "booking_confirmed" analytics event again.
+    return { booking, alreadyVerified: true, paymentAmountRupees: null, paymentType: booking.paymentType };
   }
 
   if (booking.paymentStatus !== "pending_verification") {
@@ -194,7 +197,12 @@ async function verifyBookingPayment(bookingId, { verifiedBy }) {
       .catch((error) => logger.error(`Payment verified email failed: ${error.message}`));
   }
 
-  return { booking: updatedBooking, alreadyVerified: false };
+  return {
+    booking: updatedBooking,
+    alreadyVerified: false,
+    paymentAmountRupees: payment ? payment.amount / 100 : null,
+    paymentType: updatedBooking.paymentType,
+  };
 }
 
 /** Decodes a signed "verify payment" email link. Returns the bookingId, or

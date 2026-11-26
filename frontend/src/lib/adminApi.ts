@@ -103,12 +103,24 @@ export function updateBookingStatus(id: string, status: AdminBooking["status"]) 
   });
 }
 
+export type VerifyBookingPaymentResult = {
+  booking: AdminBooking;
+  // False when this booking was already verified earlier (admin panel or
+  // the email link, whichever got there first) — the caller uses this to
+  // avoid firing the "booking_confirmed" analytics event more than once.
+  alreadyVerified: boolean;
+  paymentAmountRupees: number | null;
+  paymentType: string | null;
+};
+
 /** Confirms a payment that's sitting in `pending_verification` — marks the
  * booking paid/confirmed and emails the guest the final confirmation. The
  * same action is also reachable, no-login, from the "Verify payment" button
  * in the admin's notification email (see backend payment.controller.js). */
 export function verifyBookingPayment(id: string) {
-  return authFetch<AdminBooking>(`/api/bookings/${id}/verify-payment`, { method: "PATCH" });
+  return authFetch<VerifyBookingPaymentResult>(`/api/bookings/${id}/verify-payment`, {
+    method: "PATCH",
+  });
 }
 
 export type AdminInquiry = {

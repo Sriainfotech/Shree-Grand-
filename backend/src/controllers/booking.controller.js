@@ -46,12 +46,14 @@ const updateStatus = asyncHandler(async (req, res) => {
 });
 
 const verifyPayment = asyncHandler(async (req, res) => {
-  const { booking, alreadyVerified } = await paymentService.verifyBookingPayment(req.params.id, {
-    verifiedBy: "admin_panel",
-  });
+  const { booking, alreadyVerified, paymentAmountRupees, paymentType } =
+    await paymentService.verifyBookingPayment(req.params.id, { verifiedBy: "admin_panel" });
   return success(res, {
     message: alreadyVerified ? "Payment was already verified" : "Payment verified — guest notified",
-    data: booking,
+    // alreadyVerified tells the admin panel whether to fire its
+    // "booking_confirmed" analytics event — only the call that actually
+    // performed the verification should fire it, never a repeat click.
+    data: { booking, alreadyVerified, paymentAmountRupees, paymentType },
   });
 });
 

@@ -11,6 +11,7 @@ import {
   type AdminInquiry,
 } from "@/lib/adminApi";
 import { ApiRequestError } from "@/config/api";
+import { track } from "@/lib/analytics";
 import { AdminShell } from "@/components/admin/AdminShell";
 import { useAdminGuard } from "@/components/admin/useAdminGuard";
 import { FullScreenLoader, LogoSpinner } from "@/components/ui/LogoSpinner";
@@ -158,8 +159,16 @@ function AdminDashboardPage() {
     setVerifyingId(id);
     setError(null);
     try {
-      const updated = await verifyBookingPayment(id);
-      setBookings((prev) => prev.map((b) => (b.id === id ? updated : b)));
+      const result = await verifyBookingPayment(id);
+      setBookings((prev) => prev.map((b) => (b.id === id ? result.booking : b)));
+      // Only fire when THIS click did the verifying — a repeat click (or
+      // the email link already having done it) must not double-fire.
+      if (!result.alreadyVerified) {
+        track("booking_confirmed", {
+          payment_amount: result.paymentAmountRupees,
+          payment_type: result.paymentType,
+        });
+      }
     } catch (err) {
       setError(err instanceof ApiRequestError ? err.message : "Couldn't verify this payment.");
     } finally {

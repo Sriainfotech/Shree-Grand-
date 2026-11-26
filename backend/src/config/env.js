@@ -39,6 +39,13 @@ const env = {
 
   clientOrigin: process.env.CLIENT_ORIGIN || "http://localhost:3000",
 
+  // Same GTM container the frontend loads (frontend/src/config/site.ts's
+  // analytics.gtmId) — needed so the standalone "Verify payment" page
+  // (opened straight from the admin's email, never inside the frontend
+  // React app) can fire its own "booking_confirmed" dataLayer event. Not a
+  // secret — GTM container ids are public, embedded in every page's HTML.
+  gtmContainerId: process.env.GTM_CONTAINER_ID || null,
+
   // This server's own publicly-reachable base URL — needed to build the
   // one-click "Verify payment" link sent in the admin notification email
   // (that link is a GET to this API, opened straight from the inbox, not a
