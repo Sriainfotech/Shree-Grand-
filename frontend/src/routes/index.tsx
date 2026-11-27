@@ -27,7 +27,12 @@ export const Route = createFileRoute("/")({
         "A premium farm stay and celebration venue in Vempally, Mancherial, Telangana. Stays, weddings, birthdays, corporate outings and private celebrations.",
       path: "/",
     }),
-    links: canonical("/"),
+    links: [
+      ...canonical("/"),
+      // The hero's first slide is the LCP element — without this the
+      // browser only discovers it once HeroCarousel itself renders/hydrates.
+      { rel: "preload", as: "image", href: images.hero, fetchPriority: "high" },
+    ],
     scripts: [...jsonLd(lodgingSchema()), ...jsonLd(faqSchema(homeFaqItems))],
   }),
   component: HomePage,

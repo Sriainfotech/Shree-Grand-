@@ -157,6 +157,7 @@
     color: var(--color-foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
   }
 
   h1,
@@ -238,11 +239,14 @@
 }
 
 @utility overlay-scrim {
+  /* Dark enough throughout — not just at the very bottom — that the
+     translucent white hero text (eyebrow, breadcrumbs, intro) stays
+     WCAG-AA readable regardless of how bright the photo underneath is. */
   background: linear-gradient(
     to top,
-    color-mix(in oklab, var(--color-ink) 82%, transparent),
-    color-mix(in oklab, var(--color-ink) 26%, transparent) 55%,
-    color-mix(in oklab, var(--color-ink) 8%, transparent)
+    color-mix(in oklab, var(--color-ink) 90%, transparent),
+    color-mix(in oklab, var(--color-ink) 72%, transparent) 55%,
+    color-mix(in oklab, var(--color-ink) 58%, transparent)
   );
 }
 

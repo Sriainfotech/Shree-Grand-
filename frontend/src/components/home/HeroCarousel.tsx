@@ -38,6 +38,7 @@ export function HeroCarousel() {
           width={1920}
           height={1088}
           loading={i === 0 ? "eager" : "lazy"}
+          fetchPriority={i === 0 ? "high" : "auto"}
           decoding="async"
           className={cn(
             "absolute inset-0 -z-10 h-full w-full object-cover opacity-75 transition-opacity duration-[1400ms] ease-out",

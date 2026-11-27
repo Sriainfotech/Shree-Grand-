@@ -50,15 +50,20 @@ export function MobileNav({ open, onClose }: { open: boolean; onClose: () => voi
 
   return createPortal(
     <div
+      // `inert` (not just aria-hidden) when closed: it both hides the panel
+      // from assistive tech AND makes every descendant link/button genuinely
+      // unfocusable, which is what satisfies the "aria-hidden element must
+      // not contain focusable descendants" audit — aria-hidden alone with
+      // manual tabIndex=-1 toggling still left them focusable enough to flag.
+      inert={!open}
+      aria-hidden={!open}
       className={cn(
         "fixed inset-0 z-50 overflow-hidden lg:hidden",
         open ? "pointer-events-auto" : "pointer-events-none",
       )}
-      aria-hidden={!open}
     >
       <button
         type="button"
-        tabIndex={open ? 0 : -1}
         aria-label="Close menu"
         onClick={onClose}
         className={cn(
@@ -81,7 +86,6 @@ export function MobileNav({ open, onClose }: { open: boolean; onClose: () => voi
             type="button"
             onClick={onClose}
             aria-label="Close menu"
-            tabIndex={open ? 0 : -1}
             className="flex h-10 w-10 items-center justify-center rounded-full border border-border transition-colors hover:border-primary hover:text-primary"
           >
             <X className="h-4 w-4" aria-hidden />
@@ -94,7 +98,6 @@ export function MobileNav({ open, onClose }: { open: boolean; onClose: () => voi
               <li key={l.to}>
                 <Link
                   to={l.to as never}
-                  tabIndex={open ? 0 : -1}
                   className="block py-2.5 font-display text-2xl text-foreground transition-colors hover:text-primary"
                 >
                   {l.label}
@@ -110,7 +113,6 @@ export function MobileNav({ open, onClose }: { open: boolean; onClose: () => voi
                 <Link
                   to="/experiences/$slug"
                   params={{ slug: c.slug }}
-                  tabIndex={open ? 0 : -1}
                   className="block py-1.5 text-[0.85rem] text-muted-foreground transition-colors hover:text-primary"
                 >
                   {c.name}
@@ -124,7 +126,6 @@ export function MobileNav({ open, onClose }: { open: boolean; onClose: () => voi
               <li key={l.to}>
                 <Link
                   to={l.to as never}
-                  tabIndex={open ? 0 : -1}
                   className="block py-2 font-display text-xl text-foreground transition-colors hover:text-primary"
                 >
                   {l.label}
@@ -139,12 +140,11 @@ export function MobileNav({ open, onClose }: { open: boolean; onClose: () => voi
             <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-accent" aria-hidden />
             <p className="text-[0.8rem] leading-relaxed text-muted-foreground">
               {site.location.full}
-              <span className="block text-muted-foreground/70">{site.location.landmark}</span>
+              <span className="block text-muted-foreground">{site.location.landmark}</span>
             </p>
           </div>
           <a
             href={telHref}
-            tabIndex={open ? 0 : -1}
             onClick={() => trackPhone("mobile_nav")}
             className="flex items-center gap-3 text-[0.95rem] font-medium text-foreground transition-colors hover:text-primary"
           >
@@ -154,7 +154,6 @@ export function MobileNav({ open, onClose }: { open: boolean; onClose: () => voi
 
           <Link
             to="/booking"
-            tabIndex={open ? 0 : -1}
             className="flex w-full items-center justify-center rounded-sm bg-primary px-6 py-4 text-[0.72rem] font-semibold uppercase tracking-[0.2em] text-primary-foreground"
           >
             Book Your Stay
@@ -164,7 +163,6 @@ export function MobileNav({ open, onClose }: { open: boolean; onClose: () => voi
               href={whatsappHref(whatsappMessages.general)}
               target="_blank"
               rel="noreferrer noopener"
-              tabIndex={open ? 0 : -1}
               onClick={() => trackWhatsApp("mobile_nav")}
               className="flex items-center justify-center gap-2 rounded-sm border border-border px-4 py-3.5 text-[0.7rem] font-semibold uppercase tracking-[0.16em]"
             >
@@ -172,7 +170,6 @@ export function MobileNav({ open, onClose }: { open: boolean; onClose: () => voi
             </a>
             <a
               href={telHref}
-              tabIndex={open ? 0 : -1}
               onClick={() => trackPhone("mobile_nav")}
               className="flex items-center justify-center gap-2 rounded-sm border border-border px-4 py-3.5 text-[0.7rem] font-semibold uppercase tracking-[0.16em]"
             >

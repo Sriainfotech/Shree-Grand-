@@ -64,7 +64,7 @@ export function TestimonialsCarousel() {
                         <footer className="mt-6 text-[0.68rem] uppercase tracking-[0.22em] text-muted-foreground">
                           {t.name}
                           {t.role ? (
-                            <span className="text-muted-foreground/70"> · {t.role}</span>
+                            <span className="text-muted-foreground"> · {t.role}</span>
                           ) : null}
                         </footer>
                       </blockquote>

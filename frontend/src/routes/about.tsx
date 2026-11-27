@@ -23,7 +23,11 @@ export const Route = createFileRoute("/about")({
         "The place behind the moments. Shri Grand Farm Stay is a private farm stay and celebration venue in Vempally, Mancherial, Telangana — pool, lawn, rooms, party hall, dining, garden and campfire, all on one property.",
       path: "/about",
     }),
-    links: canonical("/about"),
+    links: [
+      ...canonical("/about"),
+      // PageHero's image is the LCP element on this page.
+      { rel: "preload", as: "image", href: images.aerial, fetchPriority: "high" },
+    ],
   }),
   component: AboutPage,
 });

@@ -37,6 +37,7 @@ export function PageHero({
         alt={imageAlt}
         width={1920}
         height={1088}
+        fetchPriority="high"
         onLoad={() => setLoaded(true)}
         className={cn(
           "absolute inset-0 -z-10 h-full w-full object-cover opacity-70 transition-opacity duration-500",
@@ -57,7 +58,7 @@ export function PageHero({
               }}
             />
             <nav aria-label="Breadcrumb" className="mb-6">
-              <ol className="flex flex-wrap items-center gap-2 text-[0.68rem] uppercase tracking-[0.2em] text-primary-foreground/70">
+              <ol className="flex flex-wrap items-center gap-2 text-[0.68rem] uppercase tracking-[0.2em] text-primary-foreground/90">
                 {breadcrumbs.map((b, i) => (
                   <li key={b.to} className="flex items-center gap-2">
                     {i > 0 ? <span aria-hidden>/</span> : null}
@@ -70,10 +71,10 @@ export function PageHero({
             </nav>
           </>
         ) : null}
-        <Eyebrow className="text-primary-foreground/70">{eyebrow}</Eyebrow>
+        <Eyebrow className="text-primary-foreground/90">{eyebrow}</Eyebrow>
         <h1 className="display-hero mt-6 max-w-4xl text-balance">{title}</h1>
         {intro ? (
-          <p className="mt-6 max-w-xl text-[0.98rem] leading-relaxed text-primary-foreground/80">
+          <p className="mt-6 max-w-xl text-[0.98rem] leading-relaxed text-primary-foreground/95">
             {intro}
           </p>
         ) : null}
