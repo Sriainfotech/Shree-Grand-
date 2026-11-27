@@ -21,7 +21,11 @@ export const Route = createFileRoute("/packages")({
         "Stay, day-outing, event, wedding and corporate packages at Shri Grand Farm Stay, Vempally, Mancherial, Telangana. Enquire for pricing.",
       path: "/packages",
     }),
-    links: canonical("/packages"),
+    links: [
+      ...canonical("/packages"),
+      // PageHero's image is the LCP element on this page.
+      { rel: "preload", as: "image", href: images.hall, fetchPriority: "high" },
+    ],
   }),
   component: PackagesPage,
 });
