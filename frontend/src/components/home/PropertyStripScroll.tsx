@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { images } from "@/data/images";
-import { SectionHeader, PlaceholderNote } from "@/components/ui/section";
+import { SectionHeader } from "@/components/ui/section";
 import { ActionLink } from "@/components/ui/actions";
 import { cn } from "@/lib/utils";
 
@@ -75,24 +75,33 @@ export function PropertyStripScroll() {
           intro="Pool, lawn, rooms, party hall and garden — spaces that work as easily for a quiet weekend as for a full celebration."
         />
 
-        <div className="mt-14 grid gap-8 lg:grid-cols-2 lg:gap-16">
-          <div className="relative aspect-[4/3] overflow-hidden lg:sticky lg:top-28 lg:aspect-auto lg:h-[34rem]">
-            {spaces.map((s, i) => (
-              <img
-                key={s.key}
-                src={s.src}
-                alt={`${s.label} at a countryside farm stay`}
-                loading={i === 0 ? "eager" : "lazy"}
-                decoding="async"
-                className={cn(
-                  "absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ease-out",
-                  i === active ? "opacity-100" : "opacity-0",
-                )}
-              />
-            ))}
+        <div className="mt-14 grid grid-cols-[minmax(7rem,38%)_1fr] gap-4 sm:grid-cols-2 sm:gap-8 lg:gap-16">
+          {/* Outer wrapper carries no height/sticky of its own — left with the
+              grid's default stretch alignment, it naturally spans the full
+              height of the row (which the tall right-hand list sets). That
+              height is exactly what the inner sticky box needs to have room
+              to stay pinned while the row scrolls past; sticky applied
+              directly on a box sized to its own small content (as this used
+              to be) runs out of room to stick within almost immediately. */}
+          <div className="relative">
+            <div className="sticky top-20 aspect-square overflow-hidden sm:top-28 sm:aspect-[4/3] lg:aspect-auto lg:h-[34rem]">
+              {spaces.map((s, i) => (
+                <img
+                  key={s.key}
+                  src={s.src}
+                  alt={`${s.label} at a countryside farm stay`}
+                  loading={i === 0 ? "eager" : "lazy"}
+                  decoding="async"
+                  className={cn(
+                    "absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ease-out",
+                    i === active ? "opacity-100" : "opacity-0",
+                  )}
+                />
+              ))}
+            </div>
           </div>
 
-          <ul className="flex flex-col justify-between gap-16 py-2 lg:gap-0">
+          <ul className="flex flex-col justify-between gap-10 py-2 sm:gap-16 lg:gap-0">
             {spaces.map((s, i) => (
               <li
                 key={s.key}
@@ -100,13 +109,13 @@ export function PropertyStripScroll() {
                   itemRefs.current[i] = el;
                 }}
                 data-index={i}
-                className="lg:flex lg:min-h-[70vh] lg:items-center"
+                className="flex min-h-[60vh] items-center lg:min-h-[70vh]"
               >
                 <button
                   type="button"
                   onClick={() => setActive(i)}
                   className={cn(
-                    "group w-full border-t pt-6 text-left transition-colors lg:pt-0 lg:border-t-0 lg:border-l lg:pl-8",
+                    "group w-full border-l pl-4 text-left transition-colors sm:pl-8",
                     i === active
                       ? "border-primary text-primary"
                       : "border-border text-muted-foreground hover:text-primary",
@@ -127,7 +136,6 @@ export function PropertyStripScroll() {
 
         <div className="mt-12 flex flex-wrap items-center gap-6">
           <ActionLink to="/about">Explore the property</ActionLink>
-          <PlaceholderNote />
         </div>
       </div>
     </section>

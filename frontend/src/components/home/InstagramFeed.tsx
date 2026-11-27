@@ -1,23 +1,22 @@
 import { Instagram } from "lucide-react";
 import { images } from "@/data/images";
 import { site } from "@/config/site";
-import { SectionHeader, Figure, PlaceholderNote } from "@/components/ui/section";
+import { SectionHeader, Figure } from "@/components/ui/section";
 import { ActionAnchor } from "@/components/ui/actions";
 
 /**
  * "Follow us on Instagram" grid near the footer. There is no connected
  * Instagram API/token to pull a live feed from, so this links out to the
  * real @Shreegrandfarmstay profile rather than presenting these tiles as
- * actual Instagram posts — same representative imagery + honest disclosure
- * used everywhere else on the site (see PlaceholderNote).
+ * actual Instagram posts.
  */
 const tiles = [
-  images.pool,
-  images.garden,
-  images.hall,
-  images.room,
-  images.lawn,
-  images.campfire,
+  images.poolBright,
+  images.diningOutdoor,
+  images.roomPalmWall,
+  images.campfirePit,
+  images.playgroundSlide,
+  images.pergolaMural,
 ] as const;
 
 export function InstagramFeed() {
@@ -59,7 +58,6 @@ export function InstagramFeed() {
           <ActionAnchor href={site.social.instagramUrl} variant="outline">
             Follow @{site.social.instagram}
           </ActionAnchor>
-          <PlaceholderNote />
         </div>
       </div>
     </section>

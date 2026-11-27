@@ -27,6 +27,14 @@ export function PageHero({
 
   return (
     <section className="relative isolate flex h-[62dvh] min-h-[32rem] items-end overflow-hidden bg-ink pt-20">
+      {/* The shimmer sits behind the image (same -z-10 layer, earlier in the
+          DOM) purely as a fallback backdrop — it was never what made the
+          image itself appear. Gating the image's own opacity on `loaded`
+          meant the server-rendered HTML painted it fully transparent until
+          client JS hydrated and fired onLoad, which ties this page's LCP to
+          hydration time instead of image-download time (the actual cause of
+          mobile LCP being 5-10x worse than desktop here). The image is now
+          visible immediately; `loaded` only hides the now-redundant shimmer. */}
       {!loaded ? <div aria-hidden className="img-shimmer absolute inset-0 -z-10" /> : null}
       <img
         ref={(el) => {
@@ -39,10 +47,7 @@ export function PageHero({
         height={1088}
         fetchPriority="high"
         onLoad={() => setLoaded(true)}
-        className={cn(
-          "absolute inset-0 -z-10 h-full w-full object-cover opacity-70 transition-opacity duration-500",
-          loaded ? "opacity-70" : "opacity-0",
-        )}
+        className="absolute inset-0 -z-10 h-full w-full object-cover opacity-70"
       />
       <div aria-hidden className="absolute inset-0 -z-10 overlay-scrim" />
       <div className="shell pb-14 pt-28 text-primary-foreground">

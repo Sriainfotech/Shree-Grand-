@@ -53,9 +53,9 @@ function ExperiencesPage() {
                   alt={cat.name}
                   loading="lazy"
                   decoding="async"
-                  className="absolute inset-0 -z-10 h-full w-full object-cover opacity-70 transition-transform duration-[1.2s] ease-out group-hover:scale-105"
+                  className="absolute inset-0 -z-10 h-full w-full object-cover opacity-90 transition-transform duration-[1.2s] ease-out group-hover:scale-105"
                 />
-                <div aria-hidden className="absolute inset-0 -z-10 overlay-scrim" />
+                <div aria-hidden className="absolute inset-0 -z-10 card-scrim" />
                 <h2 className="display-xl">{cat.name}</h2>
                 <p className="mt-3 max-w-sm text-sm leading-relaxed text-primary-foreground/80">
                   {cat.tagline}

@@ -9,7 +9,7 @@ import { galleryItems } from "@/data/gallery";
 import { packageCategories } from "@/data/packages";
 import { homeFaqItems } from "@/components/home/FaqPreview";
 import { ActionLink, ActionAnchor } from "@/components/ui/actions";
-import { Eyebrow, Figure, SectionHeader, PlaceholderNote } from "@/components/ui/section";
+import { Eyebrow, Figure, SectionHeader } from "@/components/ui/section";
 import { CtaBand } from "@/components/ui/page";
 import { ArchViz } from "@/components/explore/ArchViz";
 import { TrustStrip } from "@/components/home/TrustStrip";
@@ -158,9 +158,9 @@ function HomePage() {
                   alt={cat.name}
                   loading="lazy"
                   decoding="async"
-                  className="absolute inset-0 -z-10 h-full w-full object-cover opacity-70 transition-transform duration-[1.2s] ease-out group-hover:scale-105"
+                  className="absolute inset-0 -z-10 h-full w-full object-cover opacity-90 transition-transform duration-[1.2s] ease-out group-hover:scale-105"
                 />
-                <div aria-hidden className="absolute inset-0 -z-10 overlay-scrim" />
+                <div aria-hidden className="absolute inset-0 -z-10 card-scrim" />
                 <h3 className="display-lg">{cat.name}</h3>
                 <p className="mt-3 max-w-xs text-sm leading-relaxed text-primary-foreground/80">
                   {cat.tagline}
@@ -269,7 +269,6 @@ function HomePage() {
             <ActionLink to="/gallery" variant="outline">
               View full gallery
             </ActionLink>
-            <PlaceholderNote />
           </div>
         </div>
       </section>

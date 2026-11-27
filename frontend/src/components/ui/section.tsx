@@ -1,7 +1,6 @@
 import { useRef, useState } from "react";
 import { ImageOff } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { PLACEHOLDER_IMAGE_NOTE } from "@/data/images";
 
 export function Eyebrow({
   children,
@@ -87,8 +86,13 @@ export function Figure({
         </div>
       ) : (
         <>
-          {/* Shimmer skeleton shows until the image finishes loading, instead
-              of leaving a flat placeholder box visible during the pop-in. */}
+          {/* Shimmer sits behind the image (painted first in the DOM, same
+              stacking context) purely as a fallback backdrop — gating the
+              image's own opacity on `loaded` used to mean every image on the
+              page rendered invisible in the server-rendered HTML until
+              client JS hydrated, which is what was tanking Speed Index on
+              image-heavy pages (Gallery, Packages, Home). The image is
+              visible immediately now; `loaded` only hides the shimmer. */}
           {!loaded ? <div aria-hidden className="img-shimmer absolute inset-0" /> : null}
           <img
             ref={(el) => {
@@ -101,25 +105,12 @@ export function Figure({
             decoding="async"
             onLoad={() => setLoaded(true)}
             onError={() => setBroken(true)}
-            className={cn(
-              "h-full w-full object-cover img-zoom transition-opacity duration-500",
-              loaded ? "opacity-100" : "opacity-0",
-              imgClassName,
-            )}
+            className={cn("h-full w-full object-cover img-zoom", imgClassName)}
           />
         </>
       )}
       {caption ? <figcaption className="sr-only">{caption}</figcaption> : null}
     </figure>
-  );
-}
-
-/** Honest note used anywhere placeholder visuals appear. */
-export function PlaceholderNote({ className }: { className?: string | undefined }) {
-  return (
-    <p className={cn("text-[0.7rem] tracking-wide text-muted-foreground", className)}>
-      {PLACEHOLDER_IMAGE_NOTE}
-    </p>
   );
 }
 

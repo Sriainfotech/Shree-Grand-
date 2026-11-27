@@ -4,7 +4,7 @@ import { pageMeta, canonical } from "@/lib/seo";
 import { images } from "@/data/images";
 import { photoCategories, type PhotoCategoryId } from "@/data/gallery";
 import { PageHero, CtaBand } from "@/components/ui/page";
-import { SectionHeader, Figure, Chip, PlaceholderNote, InfoNote } from "@/components/ui/section";
+import { SectionHeader, Figure, Chip } from "@/components/ui/section";
 import { ActionLink } from "@/components/ui/actions";
 import { ArchViz } from "@/components/explore/ArchViz";
 import { whatsappMessages } from "@/config/site";
@@ -40,7 +40,7 @@ function GalleryPage() {
         title="A LOOK AROUND THE PROPERTY"
         intro="Pool, rooms, dining, garden, campfire, party hall and more — grouped by the part of the property you want to see."
         image={images.aerial}
-        imageAlt="A wide, landscape-establishing view representative of the property setting"
+        imageAlt="Aerial view of the pool, lawn and play area at Shri Grand Farm Stay"
         breadcrumbs={[
           { label: "Home", to: "/" },
           { label: "Gallery", to: "/gallery" },
@@ -55,9 +55,9 @@ function GalleryPage() {
             intro="Filter by the space you're planning around, or browse everything."
           />
           <p className="mt-4 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-            These reference photos are grouped by space — pool, rooms, dining, garden, campfire,
-            children's play area, living spaces, party hall, parking, barbecue and weddings — so you
-            can quickly picture the specific area you're planning your stay or event around.
+            Photos are grouped by space — property and grounds, pool, rooms, dining, campfire,
+            children's play area and party hall — so you can quickly picture the specific area
+            you're planning your stay or event around.
           </p>
 
           <div className="mt-10 flex flex-wrap gap-2">
@@ -96,12 +96,6 @@ function GalleryPage() {
             ))}
           </div>
 
-          <PlaceholderNote className="mt-14" />
-          <InfoNote className="mt-6 max-w-3xl">
-            Per the property brief, no construction photography, drone footage or 3D renders have
-            been supplied yet. Real property photography will replace these representative images
-            once received.
-          </InfoNote>
         </div>
       </section>
 

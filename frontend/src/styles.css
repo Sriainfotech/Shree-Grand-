@@ -149,7 +149,15 @@
 
   html {
     scroll-behavior: smooth;
-    overflow-x: hidden;
+    /* `clip`, not `hidden` — any non-"visible" overflow value makes an
+       element a scroll container, and once html/body is one, its
+       position:sticky descendants measure "stuck" against that container
+       instead of the real viewport, which silently breaks sticky sitewide.
+       `clip` suppresses the horizontal overflow the same way `hidden` did,
+       without establishing a scroll container, so sticky keeps working.
+       Only overflow-x is set here — overflow-y is deliberately left alone
+       so the page still scrolls vertically exactly as before. */
+    overflow-x: clip;
   }
 
   body {
@@ -157,7 +165,7 @@
     color: var(--color-foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
+    overflow-x: clip;
   }
 
   h1,
@@ -241,12 +249,28 @@
 @utility overlay-scrim {
   /* Dark enough throughout — not just at the very bottom — that the
      translucent white hero text (eyebrow, breadcrumbs, intro) stays
-     WCAG-AA readable regardless of how bright the photo underneath is. */
+     WCAG-AA readable regardless of how bright the photo underneath is. Used
+     on full hero sections, where the text block spans a large share of the
+     image's height — see `card-scrim` for the shorter-card version. */
   background: linear-gradient(
     to top,
     color-mix(in oklab, var(--color-ink) 90%, transparent),
     color-mix(in oklab, var(--color-ink) 72%, transparent) 55%,
     color-mix(in oklab, var(--color-ink) 58%, transparent)
+  );
+}
+
+@utility card-scrim {
+  /* Lighter version of overlay-scrim for the short experience-category
+     cards: the text there sits in a small strip right at the bottom
+     (anchored with justify-end), so only that strip needs to stay dark for
+     contrast — darkening the whole card like the hero gradient does just
+     muddies the photo across the two-thirds of the card with no text on it. */
+  background: linear-gradient(
+    to top,
+    color-mix(in oklab, var(--color-ink) 85%, transparent),
+    color-mix(in oklab, var(--color-ink) 45%, transparent) 45%,
+    color-mix(in oklab, var(--color-ink) 12%, transparent)
   );
 }
 

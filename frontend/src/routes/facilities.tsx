@@ -5,7 +5,7 @@ import { pageMeta, canonical } from "@/lib/seo";
 import { images, type ImageKey } from "@/data/images";
 import { facilities, type Facility } from "@/data/facilities";
 import { PageHero, CtaBand } from "@/components/ui/page";
-import { SectionHeader, Figure, Chip, PlaceholderNote } from "@/components/ui/section";
+import { SectionHeader, Figure, Chip } from "@/components/ui/section";
 import { ActionLink } from "@/components/ui/actions";
 
 export const Route = createFileRoute("/facilities")({
@@ -163,7 +163,6 @@ function FacilitiesPage() {
 
           <div className="mt-14 flex flex-wrap items-center gap-6">
             <ActionLink to="/explore">Explore in 3D</ActionLink>
-            <PlaceholderNote />
           </div>
         </div>
       </section>

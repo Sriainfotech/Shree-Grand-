@@ -20,6 +20,7 @@ import { Route as ExploreRouteImport } from './routes/explore'
 import { Route as FacilitiesRouteImport } from './routes/facilities'
 import { Route as FarmStayRouteImport } from './routes/farm-stay'
 import { Route as GalleryRouteImport } from './routes/gallery'
+import { Route as HomeRouteImport } from './routes/home'
 import { Route as PackagesRouteImport } from './routes/packages'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as TermsRouteImport } from './routes/terms'
@@ -85,6 +86,11 @@ const FarmStayRoute = FarmStayRouteImport.update({
 const GalleryRoute = GalleryRouteImport.update({
   id: '/gallery',
   path: '/gallery',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HomeRoute = HomeRouteImport.update({
+  id: '/home',
+  path: '/home',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PackagesRoute = PackagesRouteImport.update({
@@ -155,6 +161,7 @@ export interface FileRoutesByFullPath {
   '/facilities': typeof FacilitiesRoute
   '/farm-stay': typeof FarmStayRoute
   '/gallery': typeof GalleryRoute
+  '/home': typeof HomeRoute
   '/packages': typeof PackagesRoute
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
@@ -179,6 +186,7 @@ export interface FileRoutesByTo {
   '/facilities': typeof FacilitiesRoute
   '/farm-stay': typeof FarmStayRoute
   '/gallery': typeof GalleryRoute
+  '/home': typeof HomeRoute
   '/packages': typeof PackagesRoute
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
@@ -204,6 +212,7 @@ export interface FileRoutesById {
   '/facilities': typeof FacilitiesRoute
   '/farm-stay': typeof FarmStayRoute
   '/gallery': typeof GalleryRoute
+  '/home': typeof HomeRoute
   '/packages': typeof PackagesRoute
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
@@ -230,6 +239,7 @@ export interface FileRouteTypes {
     | '/facilities'
     | '/farm-stay'
     | '/gallery'
+    | '/home'
     | '/packages'
     | '/privacy'
     | '/terms'
@@ -254,6 +264,7 @@ export interface FileRouteTypes {
     | '/facilities'
     | '/farm-stay'
     | '/gallery'
+    | '/home'
     | '/packages'
     | '/privacy'
     | '/terms'
@@ -278,6 +289,7 @@ export interface FileRouteTypes {
     | '/facilities'
     | '/farm-stay'
     | '/gallery'
+    | '/home'
     | '/packages'
     | '/privacy'
     | '/terms'
@@ -303,6 +315,7 @@ export interface RootRouteChildren {
   FacilitiesRoute: typeof FacilitiesRoute
   FarmStayRoute: typeof FarmStayRoute
   GalleryRoute: typeof GalleryRoute
+  HomeRoute: typeof HomeRoute
   PackagesRoute: typeof PackagesRoute
   PrivacyRoute: typeof PrivacyRoute
   TermsRoute: typeof TermsRoute
@@ -393,6 +406,13 @@ declare module '@tanstack/react-router' {
       path: '/gallery'
       fullPath: '/gallery'
       preLoaderRoute: typeof GalleryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/home': {
+      id: '/home'
+      path: '/home'
+      fullPath: '/home'
+      preLoaderRoute: typeof HomeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/packages': {
@@ -487,6 +507,7 @@ const rootRouteChildren: RootRouteChildren = {
   FacilitiesRoute: FacilitiesRoute,
   FarmStayRoute: FarmStayRoute,
   GalleryRoute: GalleryRoute,
+  HomeRoute: HomeRoute,
   PackagesRoute: PackagesRoute,
   PrivacyRoute: PrivacyRoute,
   TermsRoute: TermsRoute,
